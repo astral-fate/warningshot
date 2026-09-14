@@ -31,10 +31,7 @@ def _baseline_window(t0, length_days, gap_days=ev.BASELINE_GAP_DAYS):
 def _fetch_span(t0, pad_before=140, pad_after=60):
     a = _dt.datetime.strptime(t0, "%Y%m%d") - _dt.timedelta(days=pad_before)
     b = _dt.datetime.strptime(t0, "%Y%m%d") + _dt.timedelta(days=pad_after)
-    today = _dt.datetime.now()
-    if b > today:
-        b = today - _dt.timedelta(days=1)
-    return a.strftime("%Y%m%d"), b.strftime("%Y%m%d")
+    return a.strftime("%Y%m%d"), ev.horizon_end(b.strftime("%Y%m%d"))
 
 
 def page_profile(article, t0, baseline_len=30, peak_window_days=14,

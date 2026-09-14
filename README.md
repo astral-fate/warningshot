@@ -118,6 +118,12 @@ ship: Hacker News scores keep accruing (a published `1,522` replicates as `1,632
 rate-limits to one request every five seconds. Without `cache/`, a clean clone re-fetches ~25
 pageview series and a paginated comment thread, and some tests and checks skip until it does.
 
+The data horizon is frozen at `events.DATA_AS_OF` for the same reason. Fetch windows used to clamp
+to `datetime.now()`, which put the current date into the cache key — so the same analysis re-run a
+day later missed the cache and refetched, and "reproduces offline" was true only on the day the
+cache was built. Clamping to a fixed date instead makes the key stable, the results
+date-independent, and extending the horizon an explicit edit rather than a side effect of time.
+
 **Why ratios are bootstrapped directly.** Two separately estimated intervals overlapping is not a
 test that the parameters are indistinguishable, so half-life comparisons resample the ratio itself.
 For the same reason every exponential fit is computed twice — log-space OLS is biased with invalid
@@ -145,7 +151,7 @@ src/warningshot/
 cache/                  committed API responses — what makes the rerun free
 results/                committed numbers; verify.py checks all 121 of them
 out/                    generated figures and CSV tables
-tests/                  115 tests, no network
+tests/                  118 tests, no network
 ```
 
 `src/warningshot/detect/`, `data/corpus/` and `scripts/prepare_corpus.py` are a labelled attack
@@ -157,7 +163,7 @@ read sibling repos via `$WARNINGSHOT_REPOS`; without those, the corpus tests ski
 ```bash
 pip install -e ".[dev]"
 
-python -m pytest                           # 115 tests, no network
+python -m pytest                           # 118 tests, no network
 python scripts/verify.py                   # 121 checks against committed results
 ```
 

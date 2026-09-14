@@ -112,3 +112,43 @@ def test_placebo_null_is_computed_over_quiet_windows(monkeypatch):
     assert len(null) >= 10
     assert all(row["concept_excess"] == 0 for row in null)
     assert m.percentile_rank(1, [r["concept_excess"] for r in null]) == 100.0
+
+
+# --- the data horizon must not depend on when the code is run ---------------
+# Fetch spans used to clamp their end to datetime.now(), which put the current
+# date into the cache key: the same analysis re-run a day later missed the
+# cache, re-fetched, and could return a different series. That made the "$0,
+# offline, no credentials" reproduction claim true only on the day the cache
+# was built. These tests pin the behaviour that replaced it.
+
+def test_fetch_span_is_independent_of_the_wall_clock(monkeypatch):
+    """The span must be identical no matter what day the analysis is run."""
+    t0 = ev.JULY_INCIDENT.t0
+
+    class FrozenFar(dt.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return dt.datetime(2031, 1, 1)
+
+    baseline = study._fetch_span(t0)
+    monkeypatch.setattr(study._dt, "datetime", FrozenFar)
+    assert study._fetch_span(t0) == baseline, (
+        "fetch span moved when the clock did; the cache key is date-dependent "
+        "again and offline reproduction will decay"
+    )
+
+
+def test_fetch_span_never_runs_past_the_frozen_horizon():
+    """Whatever the event, the window stops at the last day of collected data."""
+    for event in ev.EVENTS.values():
+        _, end = study._fetch_span(event.t0)
+        assert end <= ev.DATA_AS_OF, (
+            "%s fetches past DATA_AS_OF (%s > %s); the committed cache cannot "
+            "cover it" % (event.key, end, ev.DATA_AS_OF)
+        )
+
+
+def test_horizon_end_clamps_only_upward_dates():
+    assert ev.horizon_end("20990101") == ev.DATA_AS_OF
+    assert ev.horizon_end("20260101") == "20260101"
+    assert ev.horizon_end(ev.DATA_AS_OF) == ev.DATA_AS_OF

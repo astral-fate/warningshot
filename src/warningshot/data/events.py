@@ -113,3 +113,22 @@ SEASON_MATCHED_SPANS = [
     ("20240615", "20240915"),
     ("20250615", "20250915"),
 ]
+
+
+# The data horizon, frozen.
+#
+# Every fetch span used to clamp its end to `datetime.now()`, which put the
+# current date into the cache key: the same analysis re-run a day later missed
+# the cache, re-fetched, and could return a slightly different series. That
+# made "reproduces offline at $0" true only on the day the cache was built.
+#
+# DATA_AS_OF is the last day of pageview data this study uses. Fetch spans
+# clamp to it rather than to the clock, so the cache key is stable, a clean
+# clone reproduces the committed results on any future date, and extending the
+# horizon becomes an explicit edit here rather than a silent effect of time.
+DATA_AS_OF = "20260913"
+
+
+def horizon_end(candidate):
+    """Clamp a fetch-window end date to the frozen data horizon."""
+    return min(candidate, DATA_AS_OF)

@@ -49,8 +49,7 @@ def lookups(page, t0, baseline_len=30, horizon=45, search_days=14,
     """
     a = (_dt.datetime.strptime(t0, _FMT) - _dt.timedelta(days=baseline_len + 40)).strftime(_FMT)
     b = (_dt.datetime.strptime(t0, _FMT) + _dt.timedelta(days=horizon + 5)).strftime(_FMT)
-    today = (_dt.datetime.now() - _dt.timedelta(days=1)).strftime(_FMT)
-    series = src.pageviews(page, a, min(b, today), **kw)
+    series = src.pageviews(page, a, ev.horizon_end(b), **kw)
     if not series:
         return None
     bs, be = _baseline_window(t0, baseline_len)
@@ -113,8 +112,7 @@ def media(query, t0, horizon=45, baseline_days=6, search_days=14, **kw):
     """
     a = (_dt.datetime.strptime(t0, _FMT) - _dt.timedelta(days=baseline_days)).strftime(_FMT)
     b = (_dt.datetime.strptime(t0, _FMT) + _dt.timedelta(days=horizon + 5)).strftime(_FMT)
-    today = (_dt.datetime.now() - _dt.timedelta(days=1)).strftime(_FMT)
-    series = src.gdelt_timeline(query, a, min(b, today), **kw)
+    series = src.gdelt_timeline(query, a, ev.horizon_end(b), **kw)
     if not series:
         return None
     pre = [v for k, v in series.items() if k < t0]
