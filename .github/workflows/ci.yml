@@ -35,10 +35,21 @@ jobs:
       - name: Verify headline numbers against committed results
         run: python scripts/verify.py
 
-      - name: Producers regenerate results without fetching
-        # A producer that reaches the network on a clean checkout means the
-        # committed cache no longer covers the analysis. Fail loudly rather
-        # than let the "$0, offline" claim rot.
+      - name: Producers regenerate the results without fetching
+        # Two separate invariants, and only the first is exact.
+        #
+        # Exact: re-running the producers must not add a cache entry. A fetch
+        # means the committed cache no longer covers the analysis, and the
+        # "$0, offline, no credentials" claim is already false.
+        #
+        # Tolerance-based: the regenerated numbers must still satisfy every
+        # check in verify.py. Byte-equality is deliberately NOT required --
+        # bootstrap resampling and np.percentile differ in the last digit
+        # across numpy versions (CI runs 2.2/2.5 against the author's 2.4), so
+        # demanding identical bytes would fail on a version bump while the
+        # science was untouched. verify.py carries explicit tolerances; those
+        # are the precision the paper actually claims, so those are what is
+        # enforced here.
         run: |
           set -euo pipefail
           before=$(find cache -type f | wc -l)
@@ -46,14 +57,22 @@ jobs:
           python scripts/nulls_and_controls.py    > /dev/null
           python scripts/robustness_suite.py      > /dev/null
           after=$(find cache -type f | wc -l)
+
           echo "cache entries before=$before after=$after"
           if [ "$before" != "$after" ]; then
             echo "::error::producers fetched new data; the committed cache no longer covers the analysis"
             git status --short cache/
             exit 1
           fi
-          if ! git diff --quiet -- results/; then
-            echo "::error::regenerating results/ changed committed values"
-            git diff --stat -- results/
+
+          echo "--- re-verifying against the REGENERATED results ---"
+          if ! python scripts/verify.py; then
+            echo "::error::regenerated results no longer satisfy verify.py"
             exit 1
+          fi
+
+          if ! git diff --quiet -- results/; then
+            echo "::notice::regenerated results differ from the committed bytes"
+            echo "(expected on a different numpy/scipy build; all checks still pass)"
+            git diff --stat -- results/
           fi
