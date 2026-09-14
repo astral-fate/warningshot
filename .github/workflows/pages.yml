@@ -1,0 +1,70 @@
+name: Deploy deck to GitHub Pages
+
+# Publishes the pitch deck (index.html) and the assets it references. The deck
+# is plain static HTML with no build step, so this uploads the repository as-is
+# rather than running a generator.
+#
+# One-time setup: Settings -> Pages -> Source: "GitHub Actions".
+# On a private repository, Pages requires a paid plan; on a public one it is free.
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'index.html'
+      - 'docs/**'
+      - 'paper/main.pdf'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the deck's assets resolve
+        run: |
+          set -euo pipefail
+          test -f index.html
+          # every relative src/href in the deck must exist, or Pages 404s silently
+          missing=0
+          for ref in $(grep -oE '(src|href)="[^"#:]+"' index.html \
+                       | sed -E 's/.*="([^"]+)"/\1/' \
+                       | grep -vE '^(https?:|mailto:|#)' | sort -u); do
+            if [ ! -e "$ref" ]; then echo "missing asset: $ref"; missing=1; fi
+          done
+          exit $missing
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site/docs _site/paper
+          cp index.html _site/
+          cp docs/pipeline.svg _site/docs/
+          cp paper/main.pdf _site/paper/
+          cp README.md _site/ 2>/dev/null || true
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

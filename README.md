@@ -3,7 +3,7 @@
 **A published claim about how far an AI incident travelled reverses when you change which
 Wikipedia page you count — and the risk vocabulary it was a warning about never moved at all.**
 
-Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: [`slides.html`](slides.html) ·
+Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: [`index.html`](index.html) ·
 Apart Research × CeSIA, AI Incident Response Sprint (Track 4) · MIT licensed
 
 ---
@@ -134,7 +134,7 @@ to `2.7×`; the ordering of the channels does not.
 
 ```
 paper/main.tex          the paper; 8-page body, references and appendix excluded
-slides.html             self-contained 15-slide deck, opens in any browser
+index.html              self-contained 16-slide deck; also the GitHub Pages entry point
 docs/pipeline.svg       the diagram above
 
 src/warningshot/
@@ -182,6 +182,24 @@ python scripts/hawkesn_engagement.py       # HawkesN fit
 they drift, so the numbers above cannot go stale while the artifacts move.
 
 To rebuild the paper: `cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main`.
+
+## The deck
+
+[`index.html`](index.html) is a self-contained 16-slide pitch deck — cover and headline metrics,
+the hook, the problem, data, the methodology diagram, five result slides, robustness, limitations
+and dual-use, conclusion, and how to reproduce it. Open the file directly, or serve the repository
+and visit the root. Arrow keys, space, and swipe all navigate; `#7` jumps to a slide; printing
+gives one slide per page.
+
+It is deployed by [`.github/workflows/pages.yml`](.github/workflows/pages.yml). To turn it on:
+**Settings → Pages → Source: GitHub Actions**, then push to `main`. The workflow checks that every
+asset the deck references resolves before publishing, so a moved figure fails the build instead of
+404-ing silently. GitHub Pages on a *private* repository requires a paid plan; on a public one it
+is free.
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs the tests and `verify.py` on Python
+3.10 and 3.12, and fails if re-running the producers fetches anything or changes `results/` —
+which is what keeps the offline-reproduction claim from quietly decaying.
 
 ## Scope of the result
 

@@ -1,0 +1,59 @@
+name: CI
+
+# The reproducibility claim is that a clean clone reproduces every number
+# offline, with no credentials. That is only credible if something checks it on
+# a machine that is not the author's, so this runs the same two commands the
+# README tells a reader to run.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Tests (no network)
+        run: python -m pytest -q
+
+      - name: Verify headline numbers against committed results
+        run: python scripts/verify.py
+
+      - name: Producers regenerate results without fetching
+        # A producer that reaches the network on a clean checkout means the
+        # committed cache no longer covers the analysis. Fail loudly rather
+        # than let the "$0, offline" claim rot.
+        run: |
+          set -euo pipefail
+          before=$(find cache -type f | wc -l)
+          python scripts/power_and_comparators.py > /dev/null
+          python scripts/nulls_and_controls.py    > /dev/null
+          python scripts/robustness_suite.py      > /dev/null
+          after=$(find cache -type f | wc -l)
+          echo "cache entries before=$before after=$after"
+          if [ "$before" != "$after" ]; then
+            echo "::error::producers fetched new data; the committed cache no longer covers the analysis"
+            git status --short cache/
+            exit 1
+          fi
+          if ! git diff --quiet -- results/; then
+            echo "::error::regenerating results/ changed committed values"
+            git diff --stat -- results/
+            exit 1
+          fi

@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Whose Page Did You Count? — pitch deck</title>
+<meta name="description" content="Counting-dependence and a null result in measuring attention to an AI incident. Apart Research x CeSIA, AI Incident Response Sprint, Track 4.">
 <style>
   :root{
     --bg:#0e1117; --card:#161b22; --line:#2b323c; --fg:#e6edf3; --dim:#9198a1;
-    --accent:#6cb6ff; --good:#5fd88a; --warn:#e3b341; --bad:#ff7b72; --violet:#c09cff;
+    --accent:#6cb6ff; --good:#5fd88a; --warn:#e3b341; --bad:#ff7b72;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
@@ -18,15 +19,15 @@
 
   .deck{height:100vh;width:100vw;position:relative}
   .slide{position:absolute;inset:0;display:none;flex-direction:column;
-         padding:clamp(28px,4.5vh,56px) clamp(32px,5vw,88px);overflow:auto}
+         padding:clamp(26px,4.2vh,52px) clamp(30px,5vw,84px);overflow:auto}
   .slide.on{display:flex}
 
   .kicker{font-size:clamp(11px,1.15vw,13px);letter-spacing:.16em;text-transform:uppercase;
-          color:var(--dim);font-weight:700;margin-bottom:.9rem}
+          color:var(--dim);font-weight:700;margin-bottom:.85rem}
   h1{font-size:clamp(30px,4.6vw,60px);line-height:1.06;margin:0 0 .5rem;letter-spacing:-.02em}
-  h2{font-size:clamp(24px,3.1vw,40px);line-height:1.12;margin:0 0 1.1rem;letter-spacing:-.015em}
+  h2{font-size:clamp(23px,3vw,38px);line-height:1.12;margin:0 0 1rem;letter-spacing:-.015em}
   h3{font-size:clamp(15px,1.5vw,19px);margin:0 0 .5rem;color:var(--accent)}
-  p{font-size:clamp(15px,1.45vw,19px);line-height:1.55;margin:0 0 .85rem;max-width:78ch;color:#cdd6e0}
+  p{font-size:clamp(14.5px,1.4vw,18px);line-height:1.55;margin:0 0 .8rem;max-width:78ch;color:#cdd6e0}
   .lead{font-size:clamp(17px,1.8vw,24px);color:var(--fg)}
   .dim{color:var(--dim)}
   strong{color:#fff}
@@ -36,8 +37,7 @@
   .grid{display:grid;gap:clamp(12px,1.4vw,20px)}
   .g2{grid-template-columns:repeat(2,1fr)}
   .g3{grid-template-columns:repeat(3,1fr)}
-  .g4{grid-template-columns:repeat(4,1fr)}
-  @media (max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  @media (max-width:820px){.g2,.g3{grid-template-columns:1fr}}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
         padding:clamp(14px,1.6vw,22px)}
@@ -51,15 +51,15 @@
   .stat .k{font-size:clamp(11px,1.1vw,13.5px);color:var(--dim);line-height:1.35}
 
   table{border-collapse:collapse;width:100%;font-size:clamp(12.5px,1.25vw,16px)}
-  th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line)}
+  th,td{text-align:left;padding:.48rem .7rem;border-bottom:1px solid var(--line)}
   th{color:var(--dim);font-weight:600;font-size:clamp(11px,1.05vw,13px);
      text-transform:uppercase;letter-spacing:.07em}
   td.num{font-family:var(--mono);text-align:right;white-space:nowrap}
   tr.hi td{background:rgba(108,182,255,.08)}
   tr.hi td.num{color:var(--accent);font-weight:700}
 
-  ul{margin:0 0 .85rem;padding-left:1.15rem}
-  li{font-size:clamp(14px,1.35vw,18px);line-height:1.5;margin-bottom:.45rem;color:#cdd6e0}
+  ul{margin:0 0 .8rem;padding-left:1.15rem}
+  li{font-size:clamp(13.5px,1.3vw,17px);line-height:1.5;margin-bottom:.4rem;color:#cdd6e0}
 
   pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;
       padding:clamp(12px,1.4vw,18px);overflow-x:auto;font-family:var(--mono);
@@ -69,9 +69,18 @@
   .quote{border-left:3px solid var(--warn);padding:.3rem 0 .3rem 1rem;
          font-size:clamp(16px,1.7vw,22px);line-height:1.45;color:#e8dcc0;max-width:72ch}
 
+  /* figure plate: the diagram is drawn on white, so give it a deliberate panel */
+  .plate{background:#fff;border-radius:12px;padding:clamp(8px,1vw,14px);
+         border:1px solid #30363d;display:flex;align-items:center;justify-content:center;
+         min-height:0;flex:1}
+  .plate img{display:block;width:100%;height:100%;object-fit:contain;max-height:62vh}
+  figcaption{font-size:clamp(11.5px,1.1vw,14px);color:var(--dim);margin-top:.6rem;
+             line-height:1.5;max-width:100ch}
+  figure{margin:0;display:flex;flex-direction:column;flex:1;min-height:0}
+
   .spacer{flex:1}
   .foot{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
-        border-top:1px solid var(--line);padding-top:.7rem;margin-top:1rem;
+        border-top:1px solid var(--line);padding-top:.65rem;margin-top:.9rem;
         font-size:clamp(11px,1.05vw,13px);color:var(--dim)}
 
   .bar{position:fixed;left:0;bottom:0;height:3px;background:var(--accent);
@@ -83,10 +92,10 @@
   .count{font-family:var(--mono);font-size:12px;color:var(--dim);padding:0 6px}
 
   .cover-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.2vw,18px);
-                 margin-top:clamp(18px,2.4vh,32px)}
+                 margin-top:clamp(16px,2.2vh,30px)}
   @media (max-width:820px){.cover-metrics{grid-template-columns:repeat(2,1fr)}}
   .byline{font-size:clamp(13px,1.3vw,17px);color:var(--dim);line-height:1.6}
-  .rule{height:1px;background:var(--line);margin:clamp(14px,2vh,24px) 0}
+  .rule{height:1px;background:var(--line);margin:clamp(12px,1.8vh,22px) 0}
 
   .big{font-size:clamp(26px,3.6vw,46px);line-height:1.18;letter-spacing:-.015em;
        max-width:22ch;font-weight:600}
@@ -107,7 +116,7 @@
 <div class="deck" id="deck">
 
 <!-- 1 ─────────────────────────────── COVER -->
-<section class="slide on">
+<section class="slide on" data-label="Cover">
   <div class="kicker">Apart Research × CeSIA · AI Incident Response Sprint · Track 4</div>
   <h1>Whose Page<br>Did You Count?</h1>
   <p class="lead" style="max-width:60ch">Counting-dependence and a null result in measuring
@@ -125,19 +134,18 @@
       <div class="k">percentile — AI-risk vocabulary against a season-matched null:
         <strong>no detectable movement</strong></div></div>
     <div class="stat"><div class="n bad">33<span style="font-size:.55em">rd</span></div>
-      <div class="k">percentile — our own decay headline <strong>fails its null</strong> and is
+      <div class="k">percentile — a headline decay result <strong>fails its null</strong> and is
         withdrawn</div></div>
-    <div class="stat"><div class="n good">67 / 67</div>
+    <div class="stat"><div class="n good">121 / 121</div>
       <div class="k">numbers recomputed offline by <span class="mono">verify.py</span>;
-        92 tests, no network, <strong>$0</strong></div></div>
+        118 tests, no network, <strong>$0</strong></div></div>
   </div>
   <div class="spacer"></div>
-  <div class="foot"><span>3 public channels · 5 null distributions · 8-page paper</span>
-    <span>→ / space to advance</span></div>
+  <div class="foot"><span></span><span>→ / space to advance</span></div>
 </section>
 
 <!-- 2 ─────────────────────────────── HOOK -->
-<section class="slide">
+<section class="slide" data-label="The hook">
   <div class="kicker">The hook</div>
   <div class="spacer"></div>
   <div class="big">“We keep saying we need warning shots. Then one arrives, and it barely
@@ -150,11 +158,11 @@
   <p>That question has no answer until you say <strong>whose page you counted</strong> — and the
      available choices give opposite answers from the same data.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>2 · The hook</span><span>Whose Page Did You Count?</span></div>
+  <div class="foot"><span></span><span>Whose Page Did You Count?</span></div>
 </section>
 
-<!-- 3 ─────────────────────────────── THE PROBLEM -->
-<section class="slide">
+<!-- 3 ─────────────────────────────── PROBLEM -->
+<section class="slide" data-label="The problem">
   <div class="kicker">The problem</div>
   <h2>The published answer rests on three unstated choices</h2>
   <div class="quote">“June’s ban of Fable 5 drove roughly seven times more excess traffic than
@@ -176,11 +184,11 @@
      difference between “the warning shot underperformed an export-control action” and “the
      warning shot outperformed it”.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>3 · The problem</span><span>§1, §4.1</span></div>
+  <div class="foot"><span></span><span>§1, §4.1</span></div>
 </section>
 
 <!-- 4 ─────────────────────────────── DATA -->
-<section class="slide">
+<section class="slide" data-label="Data">
   <div class="kicker">Data</div>
   <h2>Three public channels, one frozen cache</h2>
   <table>
@@ -194,24 +202,40 @@
           <td>an outlet published</td><td class="num">daily</td></tr>
     </tbody>
   </table>
-  <div class="grid g2" style="margin-top:1.2rem">
+  <div class="grid g2" style="margin-top:1.1rem">
     <div class="card"><h3>All public, all keyless</h3>
-      <p>No credentials, no paid tier, no institutional access. Anyone can re-run this.</p></div>
-    <div class="card"><h3>Responses are cached and committed</h3>
+      <p>No credentials, no paid tier, no institutional access. Anyone can re-run this at $0.</p></div>
+    <div class="card"><h3>Responses are cached, and the horizon is frozen</h3>
       <p>HN scores keep accruing (a published <span class="mono">1,522</span> replicates as
          <span class="mono">1,632</span> today) and GDELT rate-limits to one request per five
-         seconds. Shipping the cache is what makes the numbers checkable rather than merely
-         claimed.</p></div>
+         seconds. Fetch windows clamp to a fixed date rather than to the clock, so the cache key
+         never changes and the rerun stays free on any future day.</p></div>
   </div>
-  <p class="dim" style="margin-top:1rem">Three dates anchor everything: <strong>16 Jul</strong>
+  <p class="dim" style="margin-top:.9rem">Three dates anchor everything: <strong>16 Jul</strong>
      Hugging Face discloses · <strong>21 Jul</strong> OpenAI acknowledges responsibility ·
      <strong>26 Aug</strong> OpenAI and METR/Redwood publish forensics.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>4 · Data</span><span>§3.1</span></div>
+  <div class="foot"><span></span><span>§3.1</span></div>
 </section>
 
-<!-- 5 ─────────────────────────────── METHOD -->
-<section class="slide">
+<!-- 5 ─────────────────────────────── METHODOLOGY (diagram) -->
+<section class="slide" data-label="Methodology">
+  <div class="kicker">Methodology</div>
+  <h2>Sources → cache → fits → nulls → checked results</h2>
+  <figure>
+    <div class="plate">
+      <img src="docs/pipeline.svg"
+           alt="Pipeline diagram. Three public sources — Wikimedia Pageviews (lookups), Hacker News Algolia (engagement) and GDELT DOC 2.0 (media) — feed a committed on-disk cache. data/modalities.py aligns the three channels onto a common event clock. Three estimation modules run in parallel: core/metrics.py computes baseline, excess and baseline-days; core/regression.py fits exponential, power-law and two-phase decay with AIC selection penalty and moving-block bootstrap; core/hawkesn.py separates kernel decay from population exhaustion. eval/nulls.py then gates every claim against five null distributions. Committed results/*.json feed both scripts/verify.py, which recomputes 121 checks offline, and paper/main.pdf.">
+    </div>
+    <figcaption>Every claim passes through <span class="mono">eval/nulls.py</span> before it
+      reaches a result. The cache sits between the network and the analysis, which is what makes
+      the whole pipeline re-runnable offline at zero cost.</figcaption>
+  </figure>
+  <div class="foot"><span></span><span>docs/pipeline.svg · §3</span></div>
+</section>
+
+<!-- 6 ─────────────────────────────── METHOD detail -->
+<section class="slide" data-label="Method">
   <div class="kicker">Method</div>
   <h2>Nothing is claimed without a distribution</h2>
   <div class="grid g3">
@@ -241,14 +265,14 @@
         <li>ratios bootstrapped <em>directly</em>, not inferred from overlapping intervals</li>
       </ul></div>
   </div>
-  <p style="margin-top:1.1rem" class="dim">The comparability rule for the thread null was fixed
+  <p style="margin-top:1rem" class="dim">The comparability rule for the thread null was fixed
      <strong>before</strong> any half-life was inspected.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>5 · Method</span><span>§3.2–3.4</span></div>
+  <div class="foot"><span></span><span>§3.2–3.4</span></div>
 </section>
 
-<!-- 6 ─────────────────────────────── RESULT 1 -->
-<section class="slide">
+<!-- 7 ─────────────────────────────── RESULT 1 -->
+<section class="slide" data-label="Result 1 · the inversion">
   <div class="kicker">Result 1 · the inversion</div>
   <h2>Same data. Opposite answer.</h2>
   <table>
@@ -263,7 +287,7 @@
         <td class="num">6,571</td><td class="num">2,298</td><td class="num">0.35</td></tr>
     </tbody>
   </table>
-  <table style="margin-top:1.3rem">
+  <table style="margin-top:1.2rem">
     <thead><tr><th>Comparison</th><th class="num">Raw excess</th><th class="num">Baseline-days</th></tr></thead>
     <tbody>
       <tr><td>June developer vs July developer — the published “7×”</td>
@@ -272,17 +296,19 @@
         <td class="num">1.46×</td><td class="num">23.06×</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:1.1rem"><span class="tag ok">confirmed</span>
+  <p style="margin-top:1rem"><span class="tag ok">confirmed</span>
      “OpenAI’s page didn’t move at all” — 0.35 baseline-days, a third of one ordinary day.
      <strong>But</strong> the June ban was a story about a developer and landed on the developer’s
      page; the July incident was a story about a breach and landed on the victim’s.
      <em>Comparing them on the developer axis compares a story to its own off-target.</em></p>
+  <p class="dim">Bootstrap on the inversion, resampling the baseline window that dominates its
+     uncertainty: <span class="mono">23.06×</span>, 95% CI <span class="mono">(19.84, 40.54)</span>.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>6 · Result 1</span><span>§4.1</span></div>
+  <div class="foot"><span></span><span>§4.1</span></div>
 </section>
 
-<!-- 7 ─────────────────────────────── RESULT 1b -->
-<section class="slide">
+<!-- 8 ─────────────────────────────── RESULT 1b -->
+<section class="slide" data-label="Result 1 · the honest caveat">
   <div class="kicker">Result 1 · the honest caveat</div>
   <h2>The direction is robust. The magnitude is not.</h2>
   <table>
@@ -297,12 +323,12 @@
         <td class="num">11,423</td><td class="num">15,861</td><td class="num">1.39</td>
         <td class="num">28.92×</td></tr>
       <tr><td class="mono">Claude_(language_model)</td><td class="num">7,852</td>
-        <td class="num">3,458</td><td class="num">0.44</td><td class="num">91.21×</td></tr>
+        <td class="num">3,458</td><td class="num">0.44</td><td class="num">91.20×</td></tr>
       <tr><td class="mono">OpenAI</td><td class="num">7,620</td><td class="num">2,102</td>
-        <td class="num">0.28</td><td class="num">145.54×</td></tr>
+        <td class="num">0.28</td><td class="num">145.53×</td></tr>
     </tbody>
   </table>
-  <div class="grid g2" style="margin-top:1.2rem">
+  <div class="grid g2" style="margin-top:1.1rem">
     <div class="card"><h3>Why the range is so wide</h3>
       <p>A baseline-days ratio factors exactly into a raw ratio × an inverse-baseline ratio. Most
          of the <span class="mono">Anthropic</span> multiple is <span class="mono">Anthropic</span>
@@ -313,11 +339,11 @@
          result would repeat the error being diagnosed.</p></div>
   </div>
   <div class="spacer"></div>
-  <div class="foot"><span>7 · Result 1b</span><span>§4.1, App. A</span></div>
+  <div class="foot"><span></span><span>§4.1, App. A</span></div>
 </section>
 
-<!-- 8 ─────────────────────────────── RESULT 2 -->
-<section class="slide">
+<!-- 9 ─────────────────────────────── RESULT 2 -->
+<section class="slide" data-label="Result 2 · the null">
   <div class="kicker">Result 2 · the one that should worry the field</div>
   <h2>The organisations moved. The vocabulary didn’t.</h2>
   <div class="grid g2">
@@ -354,11 +380,11 @@
     </div>
   </div>
   <div class="spacer"></div>
-  <div class="foot"><span>8 · Result 2</span><span>§4.2</span></div>
+  <div class="foot"><span></span><span>§4.2</span></div>
 </section>
 
-<!-- 9 ─────────────────────────────── RESULT 3 -->
-<section class="slide">
+<!-- 10 ────────────────────────────── RESULT 3 -->
+<section class="slide" data-label="Result 3 · timing">
   <div class="kicker">Result 3 · timing</div>
   <h2>The disclosure was ordinary. The attribution was off-scale.</h2>
   <table>
@@ -375,7 +401,7 @@
         <td class="num">17,306</td><td class="num">24.7×</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:1.2rem">Against 166 prior days (median 1.00, p90 1.21, max 1.55),
+  <p style="margin-top:1.1rem">Against 166 prior days (median 1.00, p90 1.21, max 1.55),
      <strong>1.22× is the 91st percentile</strong> — detectable, top-decile, and entirely ordinary.
      The victim’s own disclosure of a serious breach moved its page to a level it reaches
      <strong>9% of days anyway</strong>.</p>
@@ -385,11 +411,11 @@
   <p class="dim"><span class="tag">hypothesis, n=1</span> Plan for the attention event to fire on
      <em>attribution to a named lab</em>, not on the victim’s disclosure.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>9 · Result 3</span><span>§4.3</span></div>
+  <div class="foot"><span></span><span>§4.3</span></div>
 </section>
 
-<!-- 10 ────────────────────────────── RESULT 4 -->
-<section class="slide">
+<!-- 11 ────────────────────────────── RESULT 4 -->
+<section class="slide" data-label="Result 4 · construct">
   <div class="kicker">Result 4 · what the channel actually measures</div>
   <h2>The biggest spike isn’t the incident.</h2>
   <table>
@@ -403,7 +429,7 @@
         <td class="num">34,679</td><td class="num">49.4×</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:1.2rem">The 27 Aug impulse cannot be attributed to the forensics either:
+  <p style="margin-top:1.1rem">The 27 Aug impulse cannot be attributed to the forensics:
      TechCrunch carried the $12.9 bn acquisition at <span class="mono">06:32 UTC</span> that same
      day. The largest corporate story in the company’s history lands on the same pageview day as
      the two reports, and <strong>this series cannot separate them</strong>.</p>
@@ -414,11 +440,11 @@
      contain a second impulse, corporate news dominates incident news — and the analyst cannot
      know the truncation point in advance.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>10 · Result 4</span><span>§4.4</span></div>
+  <div class="foot"><span></span><span>§4.4</span></div>
 </section>
 
-<!-- 11 ────────────────────────────── RESULT 5 -->
-<section class="slide">
+<!-- 12 ────────────────────────────── RESULT 5 -->
+<section class="slide" data-label="Result 5 · the negative result">
   <div class="kicker">Result 5 · the negative result</div>
   <h2>A headline-grade finding that fails its own null</h2>
   <p>Fitting the three channels separately gives half-lives of <span class="mono">7.05 h</span>
@@ -434,7 +460,7 @@
         <td class="num">7.69</td><td class="num">8.80</td><td class="num">16.94</td></tr>
     </tbody>
   </table>
-  <div class="grid g2" style="margin-top:1.2rem">
+  <div class="grid g2" style="margin-top:1.1rem">
     <div class="card"><h3><span class="tag no">withdrawn</span> The spread</h3>
       <p>The incident’s thread is <span class="mono">7.05 h</span> → <strong>33rd percentile</strong>,
          rank 10 of 30. It decays <em>more slowly</em> than the median thread. The number measures
@@ -447,11 +473,11 @@
          earlier, whatever the event.</p></div>
   </div>
   <div class="spacer"></div>
-  <div class="foot"><span>11 · Result 5</span><span>§4.5</span></div>
+  <div class="foot"><span></span><span>§4.5</span></div>
 </section>
 
-<!-- 12 ────────────────────────────── ROBUSTNESS -->
-<section class="slide">
+<!-- 13 ────────────────────────────── ROBUSTNESS -->
+<section class="slide" data-label="Robustness">
   <div class="kicker">Robustness</div>
   <h2>Every surviving number, re-tested against its strongest objection</h2>
   <table>
@@ -476,11 +502,11 @@
     </tbody>
   </table>
   <div class="spacer"></div>
-  <div class="foot"><span>12 · Robustness</span><span>App. B · <span class="mono">scripts/robustness/</span></span></div>
+  <div class="foot"><span></span><span>App. B · <span class="mono">scripts/robustness/</span></span></div>
 </section>
 
-<!-- 13 ────────────────────────────── LIMITS + DUAL USE -->
-<section class="slide">
+<!-- 14 ────────────────────────────── LIMITS + DUAL USE -->
+<section class="slide" data-label="Limitations &amp; dual-use">
   <div class="kicker">Limitations &amp; dual-use</div>
   <h2>What this does not establish — and how it could be misused</h2>
   <div class="grid g2">
@@ -512,11 +538,11 @@
          that identifies a person.</p></div>
   </div>
   <div class="spacer"></div>
-  <div class="foot"><span>13 · Limitations &amp; dual-use</span><span>§6, App. A</span></div>
+  <div class="foot"><span></span><span>§6, App. A</span></div>
 </section>
 
-<!-- 14 ────────────────────────────── CONCLUSION -->
-<section class="slide">
+<!-- 15 ────────────────────────────── CONCLUSION -->
+<section class="slide" data-label="Conclusion">
   <div class="kicker">Conclusion</div>
   <h2>What a communications team should do differently</h2>
   <div class="grid g3">
@@ -537,36 +563,36 @@
      state whose page you counted, in what units, against what null. Then most of what can be said
      about a warning shot’s reach becomes <em>checkable rather than arguable</em>.</p>
   <div class="spacer"></div>
-  <div class="foot"><span>14 · Conclusion</span><span>Whose Page Did You Count?</span></div>
+  <div class="foot"><span></span><span>Whose Page Did You Count?</span></div>
 </section>
 
-<!-- 15 ────────────────────────────── REPRODUCE -->
-<section class="slide">
+<!-- 16 ────────────────────────────── REPRODUCE -->
+<section class="slide" data-label="Reproduce">
   <div class="kicker">Reproduce it</div>
   <h2>$0, no credentials, no network</h2>
   <pre><span class="cmt"># clone, install, check</span>
 pip install -e ".[dev]"
 
-python -m pytest              <span class="cmt"># 92 tests, no network</span>
-python scripts/verify.py      <span class="cmt"># 67 headline numbers vs committed results</span>
+python -m pytest              <span class="cmt"># 118 tests, no network</span>
+python scripts/verify.py      <span class="cmt"># 121 checks vs committed results</span>
 
 <span class="cmt"># regenerate the analysis</span>
 python scripts/run.py all
 python scripts/robustness_suite.py
 python scripts/nulls_and_controls.py
-python scripts/hawkesn_engagement.py</pre>
-  <div class="cover-metrics" style="margin-top:1.4rem">
-    <div class="stat"><div class="n good">67/67</div><div class="k">verify checks agree</div></div>
-    <div class="stat"><div class="n good">92</div><div class="k">tests, offline</div></div>
+python scripts/power_and_comparators.py</pre>
+  <div class="cover-metrics" style="margin-top:1.3rem">
+    <div class="stat"><div class="n good">121/121</div><div class="k">verify checks agree</div></div>
+    <div class="stat"><div class="n good">118</div><div class="k">tests, offline</div></div>
     <div class="stat"><div class="n">3.5 MB</div><div class="k">cached API responses shipped in-repo</div></div>
     <div class="stat"><div class="n">MIT</div><div class="k">code, data and figures</div></div>
   </div>
-  <p style="margin-top:1.3rem"><strong>Fatimah Emad Eldin</strong> ·
+  <p style="margin-top:1.2rem"><strong>Fatimah Emad Eldin</strong> ·
      <span class="mono">Fatimah@trouve.works</span> · Trouvé Works<br>
      <span class="dim">Paper: <span class="mono">paper/main.pdf</span> — 8-page body, references
      and appendix excluded.</span></p>
   <div class="spacer"></div>
-  <div class="foot"><span>15 · Reproduce</span><span>Apart Research × CeSIA · Track 4</span></div>
+  <div class="foot"><span></span><span>Apart Research × CeSIA · Track 4</span></div>
 </section>
 
 </div>
@@ -574,7 +600,7 @@ python scripts/hawkesn_engagement.py</pre>
 <div class="bar" id="bar"></div>
 <div class="nav">
   <button id="prev" aria-label="Previous slide">‹</button>
-  <span class="count" id="count">1 / 15</span>
+  <span class="count" id="count"></span>
   <button id="next" aria-label="Next slide">›</button>
 </div>
 
@@ -585,12 +611,19 @@ python scripts/hawkesn_engagement.py</pre>
   var bar = document.getElementById('bar');
   var count = document.getElementById('count');
 
+  // Footer slide numbers are generated, so inserting or reordering a slide
+  // cannot leave a stale hand-typed number behind.
+  slides.forEach(function(s, k){
+    var foot = s.querySelector('.foot span:first-child');
+    if (foot) foot.textContent = (k + 1) + ' · ' + (s.getAttribute('data-label') || '');
+  });
+
   function show(n){
     i = Math.max(0, Math.min(slides.length - 1, n));
     slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
     bar.style.width = ((i + 1) / slides.length * 100) + '%';
     count.textContent = (i + 1) + ' / ' + slides.length;
-    try { location.hash = String(i + 1); } catch (e) {}
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
     slides[i].scrollTop = 0;
   }
 
@@ -613,8 +646,13 @@ python scripts/hawkesn_engagement.py</pre>
     start = null;
   }, {passive:true});
 
-  var h = parseInt((location.hash || '').replace('#',''), 10);
-  show(isFinite(h) && h > 0 ? h - 1 : 0);
+  window.addEventListener('hashchange', function(){
+    var h = parseInt(location.hash.replace('#',''), 10);
+    if (isFinite(h) && h > 0 && h - 1 !== i) show(h - 1);
+  });
+
+  var h0 = parseInt((location.hash || '').replace('#',''), 10);
+  show(isFinite(h0) && h0 > 0 ? h0 - 1 : 0);
 })();
 </script>
 </body>
