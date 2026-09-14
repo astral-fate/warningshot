@@ -729,6 +729,13 @@ prompting --- which is itself evidence that the search was not exhaustive.
 \section{Reproducibility}
 \label{sec:repro}
 
+\textbf{All code, data and experiments reported in this paper are publicly
+available} at \url{https://github.com/astral-fate/warningshot}, released under the MIT licence. The repository contains
+the analysis code, the cached API responses every number is computed from, the
+committed results, the figures, the full test suite, and the \LaTeX{} source of
+this paper. Nothing required to reproduce a result is withheld, and no
+credentials, paid tier or institutional access is needed to obtain any of it.
+
 Python 3.10+; \texttt{numpy}, \texttt{scipy}, \texttt{matplotlib},
 \texttt{requests}, \texttt{pyyaml}. Bootstrap seeds are fixed (block bootstrap
 seed 1, ratio bootstrap seed 4).
@@ -753,11 +760,14 @@ clean checkout without the sibling corpora skips the corpus tests.
 
 \section{Declarations}
 
-\paragraph{Data availability.} All sources are public and keyless: Wikimedia
-Pageviews \cite{wikimedia2026pageviews}, the Hacker News Algolia API, and GDELT
-DOC 2.0 \cite{gdelt2026doc}. Code, cached API responses, committed results and
-figures accompany this submission and are released MIT-licensed. No restricted,
-proprietary or personal data was used.
+\paragraph{Code and data availability.} \textbf{All code, datasets and
+experiments are publicly available} at \url{https://github.com/astral-fate/warningshot} under the MIT licence. The
+underlying sources are themselves public and keyless: Wikimedia Pageviews
+\cite{wikimedia2026pageviews}, the Hacker News Algolia API, and GDELT DOC 2.0
+\cite{gdelt2026doc}. The repository ships the cached API responses alongside the
+code, so every number recomputes offline at no cost; see
+App.~\ref{sec:repro} for the commands. No restricted, proprietary or personal
+data was used.
 
 \paragraph{Ethics.} No human subjects, no personal data, no interaction with any
 live system beyond public read-only API queries issued with an identifying user
