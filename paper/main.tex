@@ -99,8 +99,8 @@ comparison, headline-grade on its face, fails the null built for it: the
 incident's Hacker News thread sits at the \textbf{33rd percentile} of 30
 comparable front-page threads, so that half-life measures the platform and not
 the event (§\ref{sec:failed}).
-\item \textbf{Released, checkable artifacts.} A \texttt{verify.py} recomputes 67
-headline numbers from the committed results and prints agreement counts; 92
+\item \textbf{Released, checkable artifacts.} A \texttt{verify.py} recomputes 121
+headline numbers from the committed results and prints agreement counts; 115
 tests run with no network; every data source is public and keyless.
 \end{enumerate}
 
@@ -284,8 +284,8 @@ June candidate page & Baseline/day & Excess & Baseline-days & Ratio to July vict
 \texttt{Export\_control}         &     30 &    304 & 10.32 & $3.89\times$ \\
 \texttt{Anthropic} (13 Jun)      & 11{,}097 & 19{,}324 &  1.74 & $23.06\times$ \\
 \texttt{Anthropic} (12 Jun anchor) & 11{,}423 & 15{,}861 &  1.39 & $28.92\times$ \\
-\texttt{Claude\_(language\_model)} &  7{,}852 &  3{,}458 &  0.44 & $91.21\times$ \\
-\texttt{OpenAI}                  &  7{,}620 &  2{,}102 &  0.28 & $145.54\times$ \\
+\texttt{Claude\_(language\_model)} &  7{,}852 &  3{,}458 &  0.44 & $91.20\times$ \\
+\texttt{OpenAI}                  &  7{,}620 &  2{,}102 &  0.28 & $145.53\times$ \\
 \texttt{US\_Dept\_of\_Commerce}    &    312 &      0 &  0.00 & --- \\
 \texttt{Artificial\_intelligence} & 11{,}045 &      0 &  0.00 & --- \\
 \bottomrule
@@ -295,7 +295,7 @@ June candidate page & Baseline/day & Excess & Baseline-days & Ratio to July vict
 \noindent \textbf{The direction is robust and the magnitude is not.} The July
 victim page absorbed more than \emph{every} June candidate tested, in raw excess
 views as well as in baseline-days, so this is not a units artifact. The ratio
-nonetheless ranges from $3.89\times$ to $145.54\times$ depending on the
+nonetheless ranges from $3.89\times$ to $145.53\times$ depending on the
 comparator, because a ratio of baseline-days factors exactly into a raw-excess
 ratio times an inverse-baseline ratio,
 $(e_1/b_1)/(e_2/b_2) = (e_1/e_2)\times(b_2/b_1)$, and the two factors pull in
@@ -306,7 +306,7 @@ sixteen-times larger page; the \emph{smallest} multiple, $3.89\times$ against
 the other way. \textbf{Neither the largest nor the smallest multiple should be
 quoted as the result.} What the data supports is that the victim page wins
 against every comparator on both metrics, by between $1.46\times$ and
-$92.51\times$ raw and $3.89\times$ to $145.54\times$ normalised --- \textbf{the
+$92.51\times$ raw and $3.89\times$ to $145.53\times$ normalised --- \textbf{the
 direction, plus the range, and not any single multiple.}
 
 Two properties of the metric follow. Normalising by a page's own baseline
@@ -662,6 +662,7 @@ $(e_1/b_1)/(e_2/b_2) = (e_1/e_2)\times(b_2/b_1)$:
 Comparator & Baseline-days ratio & $=$ raw ratio & $\times$ baseline ratio \\\midrule
 \texttt{Anthropic} (12 Jun anchor) & $28.92\times$ & $1.78\times$ & $16.28\times$ \\
 \texttt{Anthropic} (13 Jun anchor) & $23.06\times$ & $1.46\times$ & $15.82\times$ \\
+\texttt{Claude\_(language\_model)}  & $91.20\times$ & $8.15\times$ & $11.19\times$ \\
 \texttt{OpenAI}                    & $145.53\times$ & $13.40\times$ & $10.86\times$ \\
 \texttt{Export\_control}           & $3.89\times$ & $92.51\times$ & $0.04\times$ \\
 \bottomrule
@@ -737,11 +738,12 @@ seed 1, ratio bootstrap seed 4).
 \begin{tabular}{ll}
 \toprule
 Command & What it establishes \\\midrule
-\texttt{python -m pytest} & 92 tests, no network \\
-\texttt{python scripts/verify.py} & 67 headline numbers recomputed from committed results \\
+\texttt{python -m pytest} & 115 tests, no network \\
+\texttt{python scripts/verify.py} & 121 checks recomputed from committed results \\
 \texttt{python scripts/run.py all} & regenerates the channel fits and figures \\
 \texttt{python scripts/robustness\_suite.py} & regenerates the robustness table \\
 \texttt{python scripts/nulls\_and\_controls.py} & regenerates the thread and season-matched nulls \\
+\texttt{python scripts/power\_and\_comparators.py} & regenerates the power bound and comparator sweep \\
 \bottomrule
 \end{tabular}
 \end{center}

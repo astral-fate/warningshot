@@ -416,3 +416,86 @@ def _excess_base_window(t0, length_days=30, gap=ev.BASELINE_GAP_DAYS):
     end = _dt.datetime.strptime(t0, _FMT) - _dt.timedelta(days=gap)
     start = end - _dt.timedelta(days=length_days - 1)
     return start.strftime(_FMT), end.strftime(_FMT)
+
+
+# The Commerce directive reached Anthropic at 17:21 ET on 12 June, which is
+# 21:21 UTC that day, and the models were disabled within hours. Wikimedia
+# reports in UTC days, so both 12 and 13 June are defensible anchors.
+JUNE_ANCHORS = ("20260612", "20260613")
+
+
+def june_anchor_sensitivity(window_days=3):
+    """What the choice of June anchor does to the inversion ratio.
+
+    Reported rather than assumed: the anchor is a judgement call, and moving it
+    by one UTC day changes the headline multiple. The 12 June anchor captures
+    less of the 13 June peak, so it moves the ratio *up* -- the opposite of the
+    direction an anchor error would be expected to bias.
+    """
+    v = _excess_and_base("Hugging_Face", ev.JULY_INCIDENT.t0, window_days)
+    if not v:
+        return None
+    anchors = []
+    for t0 in JUNE_ANCHORS:
+        a = _excess_and_base("Anthropic", t0, window_days)
+        if not a:
+            continue
+        anchors.append({
+            "anchor": t0,
+            "baseline": a["baseline"],
+            "excess": a["excess"],
+            "baseline_days": a["baseline_days"],
+            "ratio_to_july_victim": (v["baseline_days"] / a["baseline_days"]
+                                     if a["baseline_days"] else None),
+        })
+    if not anchors:
+        return None
+    return {"victim_baseline_days": v["baseline_days"],
+            "victim_excess": v["excess"],
+            "victim_baseline": v["baseline"],
+            "anchors": anchors}
+
+
+def comparator_decomposition(window_days=3):
+    """Decompose each comparator's ratio into its two independent factors.
+
+    A ratio of baseline-days factors exactly into a raw-excess ratio times an
+    inverse-baseline ratio:
+
+        (e1/b1) / (e2/b2) = (e1/e2) * (b2/b1)
+
+    The two factors can pull in opposite directions, which is why the headline
+    multiple is comparator-dependent even though its direction is not. Rows are
+    the June candidates that registered any excess, plus the 12 June anchor.
+    """
+    v = _excess_and_base("Hugging_Face", ev.JULY_INCIDENT.t0, window_days)
+    if not v:
+        return None
+
+    rows = []
+    jc = june_candidate_pages(window_days)
+    cands = list(jc["candidates"]) if jc else []
+    alt = _excess_and_base("Anthropic", JUNE_ANCHORS[0], window_days)
+    if alt:
+        alt = dict(alt, page="Anthropic (12 Jun anchor)")
+        cands.append(alt)
+
+    for c in cands:
+        if not c["excess"] or not c["baseline_days"]:
+            continue
+        rows.append({
+            "comparator": c["page"],
+            "baseline_days_ratio": v["baseline_days"] / c["baseline_days"],
+            "raw_ratio": v["excess"] / c["excess"],
+            "baseline_ratio": c["baseline"] / v["baseline"],
+        })
+    if not rows:
+        return None
+    rows.sort(key=lambda r: r["baseline_days_ratio"])
+    return {"victim_baseline": v["baseline"], "victim_excess": v["excess"],
+            "victim_baseline_days": v["baseline_days"],
+            "rows": rows,
+            "normalised_min": rows[0]["baseline_days_ratio"],
+            "normalised_max": rows[-1]["baseline_days_ratio"],
+            "raw_min": min(r["raw_ratio"] for r in rows),
+            "raw_max": max(r["raw_ratio"] for r in rows)}
