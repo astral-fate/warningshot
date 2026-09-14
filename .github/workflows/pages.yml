@@ -1,8 +1,8 @@
 name: Deploy deck to GitHub Pages
 
-# Publishes the pitch deck (index.html) and the assets it references. The deck
-# is plain static HTML with no build step, so this uploads the repository as-is
-# rather than running a generator.
+# Publishes the pitch deck (index.html), the assets it references, and a PDF
+# rendered from that same HTML. The deck has no build step of its own, so this
+# copies it as-is and renders the PDF rather than running a site generator.
 #
 # One-time setup: Settings -> Pages -> Source: "GitHub Actions".
 # On a private repository, Pages requires a paid plan; on a public one it is free.
@@ -14,6 +14,7 @@ on:
       - 'index.html'
       - 'docs/**'
       - 'paper/main.pdf'
+      - 'scripts/build_deck_pdf.py'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -45,11 +46,25 @@ jobs:
           done
           exit $missing
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Render the deck to PDF
+        # Built here rather than trusted from the repository, so the published
+        # PDF is always the current index.html and cannot go stale.
+        run: |
+          pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+          python scripts/build_deck_pdf.py --out docs/deck.pdf
+
       - name: Assemble the site
         run: |
           mkdir -p _site/docs _site/paper
           cp index.html _site/
-          cp docs/pipeline.svg _site/docs/
+          cp docs/pipeline.svg docs/deck.pdf _site/docs/
+          cp docs/deck.pdf _site/deck.pdf
           cp paper/main.pdf _site/paper/
           cp README.md _site/ 2>/dev/null || true
           touch _site/.nojekyll

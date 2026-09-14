@@ -163,3 +163,53 @@ def test_readme_links_resolve():
         if not (paths.ROOT / t).exists():
             missing.append(t)
     assert not missing, "README points at paths that do not exist: %s" % missing
+
+
+# --- the diagram is an asset that states numbers, so it drifts like prose ----
+# docs/pipeline.svg is embedded in both the README and the deck. It carried
+# "67 checks / 92 tests" for two commits after those counts changed, which is
+# the classic stale-figure failure: nothing rebuilds a hand-drawn asset, so
+# nothing notices. These pin the claims it makes.
+
+PIPELINE_SVG = paths.ROOT / "docs" / "pipeline.svg"
+
+
+def test_pipeline_diagram_states_the_real_check_count():
+    import subprocess
+    import sys
+    svg = PIPELINE_SVG.read_text(encoding="utf-8")
+    out = subprocess.run(
+        [sys.executable, str(paths.ROOT / "scripts" / "verify.py")],
+        capture_output=True, text=True, cwd=str(paths.ROOT),
+    ).stdout
+    lines = [ln for ln in out.splitlines() if "checks," in ln]
+    if not lines:
+        pytest.skip("verify.py produced no summary line")
+    n = int(lines[-1].split()[0])
+    assert "%d checks" % n in svg, (
+        "docs/pipeline.svg claims a different number of verify.py checks than "
+        "verify.py runs (%d). The diagram is embedded in the README and the "
+        "deck; update it." % n
+    )
+
+
+def test_pipeline_diagram_agrees_with_the_readme():
+    """The two documents share one diagram, so they must agree about it."""
+    svg = PIPELINE_SVG.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    import re
+    m = re.search(r"(\d+) tests, no network", svg)
+    assert m, "the diagram no longer states a test count"
+    assert "%s tests, no network" % m.group(1) in readme, (
+        "docs/pipeline.svg says %s tests; the README says something else"
+        % m.group(1)
+    )
+
+
+def test_deck_references_the_same_diagram():
+    """The deck must embed the diagram, not a hand-exported copy of it."""
+    deck = (paths.ROOT / "index.html").read_text(encoding="utf-8")
+    assert 'src="docs/pipeline.svg"' in deck, (
+        "the deck no longer points at docs/pipeline.svg; a duplicated figure "
+        "will drift from the README's"
+    )

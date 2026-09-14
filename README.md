@@ -3,7 +3,7 @@
 **A published claim about how far an AI incident travelled reverses when you change which
 Wikipedia page you count — and the risk vocabulary it was a warning about never moved at all.**
 
-Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: [`index.html`](index.html) ·
+Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: [`index.html`](index.html) / [`docs/deck.pdf`](docs/deck.pdf) ·
 Apart Research × CeSIA, AI Incident Response Sprint (Track 4) · MIT licensed
 
 ---
@@ -135,6 +135,7 @@ to `2.7×`; the ordering of the channels does not.
 ```
 paper/main.tex          the paper; 8-page body, references and appendix excluded
 index.html              self-contained 16-slide deck; also the GitHub Pages entry point
+docs/deck.pdf           the same deck rendered to 16:9 pages, one slide per page
 docs/pipeline.svg       the diagram above
 
 src/warningshot/
@@ -151,7 +152,7 @@ src/warningshot/
 cache/                  committed API responses — what makes the rerun free
 results/                committed numbers; verify.py checks all 121 of them
 out/                    generated figures and CSV tables
-tests/                  118 tests, no network
+tests/                  121 tests, no network
 ```
 
 `src/warningshot/detect/`, `data/corpus/` and `scripts/prepare_corpus.py` are a labelled attack
@@ -163,7 +164,7 @@ read sibling repos via `$WARNINGSHOT_REPOS`; without those, the corpus tests ski
 ```bash
 pip install -e ".[dev]"
 
-python -m pytest                           # 118 tests, no network
+python -m pytest                           # 121 tests, no network
 python scripts/verify.py                   # 121 checks against committed results
 ```
 
@@ -190,6 +191,18 @@ the hook, the problem, data, the methodology diagram, five result slides, robust
 and dual-use, conclusion, and how to reproduce it. Open the file directly, or serve the repository
 and visit the root. Arrow keys, space, and swipe all navigate; `#7` jumps to a slide; printing
 gives one slide per page.
+
+A PDF copy lives at [`docs/deck.pdf`](docs/deck.pdf) — 16:9, one slide per page, for when a link
+will not do. Rebuild it from the same HTML with:
+
+```bash
+pip install playwright && python -m playwright install chromium   # or use an installed Chrome
+python scripts/build_deck_pdf.py
+```
+
+The script serves the repository over HTTP, renders with a headless Chromium, and refuses to write
+a PDF if the pipeline diagram failed to load — a blank figure is worse than a failed build. CI
+rebuilds it on every deploy, so the published PDF is never a stale export.
 
 It is deployed by [`.github/workflows/pages.yml`](.github/workflows/pages.yml). To turn it on:
 **Settings → Pages → Source: GitHub Actions**, then push to `main`. The workflow checks that every
