@@ -621,6 +621,38 @@ incident or identifies a person.
 \appendix
 %====================================================================
 
+\section{Reproducibility}
+\label{sec:repro}
+
+\textbf{All code, data and experiments reported in this paper are publicly
+available} at \url{https://github.com/astral-fate/warningshot}, released under the MIT licence. The repository contains
+the analysis code, the cached API responses every number is computed from, the
+committed results, the figures, the full test suite, and the \LaTeX{} source of
+this paper. Nothing required to reproduce a result is withheld, and no
+credentials, paid tier or institutional access is needed to obtain any of it.
+
+Python 3.10+; \texttt{numpy}, \texttt{scipy}, \texttt{matplotlib},
+\texttt{requests}, \texttt{pyyaml}. Bootstrap seeds are fixed (block bootstrap
+seed 1, ratio bootstrap seed 4).
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Command & What it establishes \\\midrule
+\texttt{python -m pytest} & 121 tests, no network \\
+\texttt{python scripts/verify.py} & 121 checks recomputed from committed results \\
+\texttt{python scripts/run.py all} & regenerates the channel fits and figures \\
+\texttt{python scripts/robustness\_suite.py} & regenerates the robustness table \\
+\texttt{python scripts/nulls\_and\_controls.py} & regenerates the thread and season-matched nulls \\
+\texttt{python scripts/power\_and\_comparators.py} & regenerates the power bound and comparator sweep \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Every command runs offline against the shipped cache at \$0 cost. A
+clean checkout without the sibling corpora skips the corpus tests.
+
 \section{Extended limitations}
 \label{sec:limits-ext}
 
@@ -725,38 +757,6 @@ disclosure\}, plus forward citations of \cite{garciagavilanes2016crashes} and
 The works in §\ref{sec:related} that most closely bound the contribution,
 \cite{cavusoglu2004breach} among them, were located only after external
 prompting --- which is itself evidence that the search was not exhaustive.
-
-\section{Reproducibility}
-\label{sec:repro}
-
-\textbf{All code, data and experiments reported in this paper are publicly
-available} at \url{https://github.com/astral-fate/warningshot}, released under the MIT licence. The repository contains
-the analysis code, the cached API responses every number is computed from, the
-committed results, the figures, the full test suite, and the \LaTeX{} source of
-this paper. Nothing required to reproduce a result is withheld, and no
-credentials, paid tier or institutional access is needed to obtain any of it.
-
-Python 3.10+; \texttt{numpy}, \texttt{scipy}, \texttt{matplotlib},
-\texttt{requests}, \texttt{pyyaml}. Bootstrap seeds are fixed (block bootstrap
-seed 1, ratio bootstrap seed 4).
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Command & What it establishes \\\midrule
-\texttt{python -m pytest} & 121 tests, no network \\
-\texttt{python scripts/verify.py} & 121 checks recomputed from committed results \\
-\texttt{python scripts/run.py all} & regenerates the channel fits and figures \\
-\texttt{python scripts/robustness\_suite.py} & regenerates the robustness table \\
-\texttt{python scripts/nulls\_and\_controls.py} & regenerates the thread and season-matched nulls \\
-\texttt{python scripts/power\_and\_comparators.py} & regenerates the power bound and comparator sweep \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\noindent Every command runs offline against the shipped cache at \$0 cost. A
-clean checkout without the sibling corpora skips the corpus tests.
 
 \section{Declarations}
 
