@@ -13,14 +13,21 @@
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
-       -webkit-font-smoothing:antialiased;overflow:hidden}
+       -webkit-font-smoothing:antialiased}
 
-  .deck{height:100vh;width:100vw;position:relative}
-  .slide{position:absolute;inset:0;display:none;flex-direction:column;
-         padding:clamp(26px,4.2vh,52px) clamp(30px,5vw,84px);overflow:auto}
-  .slide.on{display:flex}
+  /* One continuous scroll. Every slide is laid out under the previous one, so
+     the deck reads top to bottom without pressing anything, and Ctrl-P /
+     Save as PDF captures all of it -- each slide still breaks onto its own
+     page via break-after below. */
+  .deck{width:100%}
+  .slide{position:relative;width:100%;min-height:100vh;display:flex;
+         flex-direction:column;overflow:hidden;
+         padding:clamp(26px,4.2vh,52px) clamp(30px,5vw,84px);
+         border-bottom:1px solid var(--line);
+         page-break-after:always;break-after:page}
+  .slide:last-child{border-bottom:0;page-break-after:auto;break-after:auto}
 
   .kicker{font-size:clamp(11px,1.15vw,13px);letter-spacing:.16em;text-transform:uppercase;
           color:var(--dim);font-weight:700;margin-bottom:.85rem}
@@ -86,13 +93,8 @@
         border-top:1px solid var(--line);padding-top:.65rem;margin-top:.9rem;
         font-size:clamp(11px,1.05vw,13px);color:var(--dim)}
 
-  .bar{position:fixed;left:0;bottom:0;height:3px;background:var(--accent);
-       transition:width .18s ease;z-index:10}
-  .nav{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:11}
-  .nav button{background:var(--card);color:var(--fg);border:1px solid var(--line);
-              border-radius:6px;width:30px;height:26px;cursor:pointer;font-size:13px;line-height:1}
-  .nav button:hover{border-color:var(--accent);color:var(--accent)}
-  .count{font-family:var(--mono);font-size:12px;color:var(--dim);padding:0 6px}
+  /* Reading position only -- there is nothing to click. */
+  .bar{position:fixed;left:0;top:0;height:3px;width:0;background:var(--accent);z-index:10}
 
   .cover-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.2vw,18px);
                  margin-top:clamp(16px,2.2vh,30px)}
@@ -119,11 +121,11 @@
               -webkit-print-color-adjust:exact;print-color-adjust:exact}
     .deck{height:auto;width:auto;position:static}
     .slide{display:flex !important;position:relative;inset:auto;
-           width:13.333in;height:7.5in;overflow:hidden;
-           padding:0.42in 0.62in;
+           width:13.333in;min-height:0;height:7.5in;overflow:hidden;
+           padding:0.42in 0.62in;border-bottom:0;
            break-after:page;page-break-after:always;break-inside:avoid}
     .slide:last-child{break-after:auto;page-break-after:auto}
-    .nav,.bar{display:none !important}
+    .bar{display:none !important}
     .plate img{max-height:5.05in}
     a{text-decoration:none}
   }
@@ -133,7 +135,7 @@
 <div class="deck" id="deck">
 
 <!-- 1 ─────────────────────────────── COVER -->
-<section class="slide on" data-label="Cover">
+<section class="slide" id="s1" data-label="Cover">
   <div class="kicker">Apart Research × CeSIA · AI Incident Response Sprint · Track 4</div>
   <h1>Whose Page<br>Did You Count?</h1>
   <p class="lead" style="max-width:60ch">Counting-dependence and a null result in measuring
@@ -155,14 +157,14 @@
         withdrawn</div></div>
     <div class="stat"><div class="n good">121 / 121</div>
       <div class="k">numbers recomputed offline by <span class="mono">verify.py</span>;
-        121 tests, no network, <strong>$0</strong></div></div>
+        124 tests, no network, <strong>$0</strong></div></div>
   </div>
   <div class="spacer"></div>
   <div class="foot"><span></span><span>→ / space to advance</span></div>
 </section>
 
 <!-- 2 ─────────────────────────────── HOOK -->
-<section class="slide" data-label="The hook">
+<section class="slide" id="s2" data-label="The hook">
   <div class="kicker">The hook</div>
   <div class="spacer"></div>
   <div class="big">“We keep saying we need warning shots. Then one arrives, and it barely
@@ -179,7 +181,7 @@
 </section>
 
 <!-- 3 ─────────────────────────────── PROBLEM -->
-<section class="slide" data-label="The problem">
+<section class="slide" id="s3" data-label="The problem">
   <div class="kicker">The problem</div>
   <h2>The published answer rests on three unstated choices</h2>
   <div class="quote">“June’s ban of Fable 5 drove roughly seven times more excess traffic than
@@ -205,7 +207,7 @@
 </section>
 
 <!-- 4 ─────────────────────────────── DATA -->
-<section class="slide" data-label="Data">
+<section class="slide" id="s4" data-label="Data">
   <div class="kicker">Data</div>
   <h2>Three public channels, one frozen cache</h2>
   <table>
@@ -236,7 +238,7 @@
 </section>
 
 <!-- 5 ─────────────────────────────── METHODOLOGY (diagram) -->
-<section class="slide" data-label="Methodology">
+<section class="slide" id="s5" data-label="Methodology">
   <div class="kicker">Methodology</div>
   <h2>Sources → cache → fits → nulls → checked results</h2>
   <figure>
@@ -252,7 +254,7 @@
 </section>
 
 <!-- 6 ─────────────────────────────── METHOD detail -->
-<section class="slide" data-label="Method">
+<section class="slide" id="s6" data-label="Method">
   <div class="kicker">Method</div>
   <h2>Nothing is claimed without a distribution</h2>
   <div class="grid g3">
@@ -289,7 +291,7 @@
 </section>
 
 <!-- 7 ─────────────────────────────── RESULT 1 -->
-<section class="slide" data-label="Result 1 · the inversion">
+<section class="slide" id="s7" data-label="Result 1 · the inversion">
   <div class="kicker">Result 1 · the inversion</div>
   <h2>Same data. Opposite answer.</h2>
   <table>
@@ -325,7 +327,7 @@
 </section>
 
 <!-- 8 ─────────────────────────────── RESULT 1b -->
-<section class="slide" data-label="Result 1 · the honest caveat">
+<section class="slide" id="s8" data-label="Result 1 · the honest caveat">
   <div class="kicker">Result 1 · the honest caveat</div>
   <h2>The direction is robust. The magnitude is not.</h2>
   <table>
@@ -360,7 +362,7 @@
 </section>
 
 <!-- 9 ─────────────────────────────── RESULT 2 -->
-<section class="slide" data-label="Result 2 · the null">
+<section class="slide" id="s9" data-label="Result 2 · the null">
   <div class="kicker">Result 2 · the one that should worry the field</div>
   <h2>The organisations moved. The vocabulary didn’t.</h2>
   <div class="grid g2">
@@ -401,7 +403,7 @@
 </section>
 
 <!-- 10 ────────────────────────────── RESULT 3 -->
-<section class="slide" data-label="Result 3 · timing">
+<section class="slide" id="s10" data-label="Result 3 · timing">
   <div class="kicker">Result 3 · timing</div>
   <h2>The disclosure was ordinary. The attribution was off-scale.</h2>
   <table>
@@ -432,7 +434,7 @@
 </section>
 
 <!-- 11 ────────────────────────────── RESULT 4 -->
-<section class="slide" data-label="Result 4 · construct">
+<section class="slide" id="s11" data-label="Result 4 · construct">
   <div class="kicker">Result 4 · what the channel actually measures</div>
   <h2>The biggest spike isn’t the incident.</h2>
   <table>
@@ -461,7 +463,7 @@
 </section>
 
 <!-- 12 ────────────────────────────── RESULT 5 -->
-<section class="slide" data-label="Result 5 · the negative result">
+<section class="slide" id="s12" data-label="Result 5 · the negative result">
   <div class="kicker">Result 5 · the negative result</div>
   <h2>A headline-grade finding that fails its own null</h2>
   <p>Fitting the three channels separately gives half-lives of <span class="mono">7.05 h</span>
@@ -494,7 +496,7 @@
 </section>
 
 <!-- 13 ────────────────────────────── ROBUSTNESS -->
-<section class="slide" data-label="Robustness">
+<section class="slide" id="s13" data-label="Robustness">
   <div class="kicker">Robustness</div>
   <h2>Every surviving number, re-tested against its strongest objection</h2>
   <table>
@@ -523,7 +525,7 @@
 </section>
 
 <!-- 14 ────────────────────────────── LIMITS + DUAL USE -->
-<section class="slide" data-label="Limitations &amp; dual-use">
+<section class="slide" id="s14" data-label="Limitations &amp; dual-use">
   <div class="kicker">Limitations &amp; dual-use</div>
   <h2>What this does not establish — and how it could be misused</h2>
   <div class="grid g2">
@@ -559,7 +561,7 @@
 </section>
 
 <!-- 15 ────────────────────────────── CONCLUSION -->
-<section class="slide" data-label="Conclusion">
+<section class="slide" id="s15" data-label="Conclusion">
   <div class="kicker">Conclusion</div>
   <h2>What a communications team should do differently</h2>
   <div class="grid g3">
@@ -584,13 +586,13 @@
 </section>
 
 <!-- 16 ────────────────────────────── REPRODUCE -->
-<section class="slide" data-label="Reproduce">
+<section class="slide" id="s16" data-label="Reproduce">
   <div class="kicker">Reproduce it</div>
   <h2>$0, no credentials, no network</h2>
   <pre><span class="cmt"># clone, install, check</span>
 pip install -e ".[dev]"
 
-python -m pytest              <span class="cmt"># 121 tests, no network</span>
+python -m pytest              <span class="cmt"># 124 tests, no network</span>
 python scripts/verify.py      <span class="cmt"># 121 checks vs committed results</span>
 
 <span class="cmt"># regenerate the analysis</span>
@@ -600,7 +602,7 @@ python scripts/nulls_and_controls.py
 python scripts/power_and_comparators.py</pre>
   <div class="cover-metrics" style="margin-top:1.3rem">
     <div class="stat"><div class="n good">121/121</div><div class="k">verify checks agree</div></div>
-    <div class="stat"><div class="n good">118</div><div class="k">tests, offline</div></div>
+    <div class="stat"><div class="n good">124</div><div class="k">tests, offline</div></div>
     <div class="stat"><div class="n">3.5 MB</div><div class="k">cached API responses shipped in-repo</div></div>
     <div class="stat"><div class="n">MIT</div><div class="k">code, data and figures</div></div>
   </div>
@@ -614,62 +616,27 @@ python scripts/power_and_comparators.py</pre>
 
 </div>
 
-<div class="bar" id="bar"></div>
-<div class="nav">
-  <button id="prev" aria-label="Previous slide">‹</button>
-  <span class="count" id="count"></span>
-  <button id="next" aria-label="Next slide">›</button>
-</div>
+<div class="bar" id="bar" aria-hidden="true"></div>
 
 <script>
 (function(){
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var i = 0;
   var bar = document.getElementById('bar');
-  var count = document.getElementById('count');
 
-  // Footer slide numbers are generated, so inserting or reordering a slide
-  // cannot leave a stale hand-typed number behind.
+  // Footer numbers are generated, so inserting or reordering a slide cannot
+  // leave a stale hand-typed number behind.
   slides.forEach(function(s, k){
     var foot = s.querySelector('.foot span:first-child');
-    if (foot) foot.textContent = (k + 1) + ' · ' + (s.getAttribute('data-label') || '');
+    if (foot) foot.textContent = (k + 1) + ' \u00b7 ' + (s.getAttribute('data-label') || '');
   });
 
-  function show(n){
-    i = Math.max(0, Math.min(slides.length - 1, n));
-    slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
-    bar.style.width = ((i + 1) / slides.length * 100) + '%';
-    count.textContent = (i + 1) + ' / ' + slides.length;
-    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
-    slides[i].scrollTop = 0;
+  function progress(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 100) + '%';
   }
-
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
-    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
-    else if (e.key === 'Home') { show(0); }
-    else if (e.key === 'End') { show(slides.length - 1); }
-  });
-
-  document.getElementById('next').addEventListener('click', function(){ show(i + 1); });
-  document.getElementById('prev').addEventListener('click', function(){ show(i - 1); });
-
-  var start = null;
-  document.addEventListener('touchstart', function(e){ start = e.changedTouches[0].clientX; }, {passive:true});
-  document.addEventListener('touchend', function(e){
-    if (start === null) return;
-    var dx = e.changedTouches[0].clientX - start;
-    if (Math.abs(dx) > 60) show(i + (dx < 0 ? 1 : -1));
-    start = null;
-  }, {passive:true});
-
-  window.addEventListener('hashchange', function(){
-    var h = parseInt(location.hash.replace('#',''), 10);
-    if (isFinite(h) && h > 0 && h - 1 !== i) show(h - 1);
-  });
-
-  var h0 = parseInt((location.hash || '').replace('#',''), 10);
-  show(isFinite(h0) && h0 > 0 ? h0 - 1 : 0);
+  window.addEventListener('scroll', progress, {passive:true});
+  window.addEventListener('resize', progress);
+  progress();
 })();
 </script>
 </body>

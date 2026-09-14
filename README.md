@@ -152,7 +152,7 @@ src/warningshot/
 cache/                  committed API responses — what makes the rerun free
 results/                committed numbers; verify.py checks all 121 of them
 out/                    generated figures and CSV tables
-tests/                  121 tests, no network
+tests/                  124 tests, no network
 ```
 
 `src/warningshot/detect/`, `data/corpus/` and `scripts/prepare_corpus.py` are a labelled attack
@@ -164,7 +164,7 @@ read sibling repos via `$WARNINGSHOT_REPOS`; without those, the corpus tests ski
 ```bash
 pip install -e ".[dev]"
 
-python -m pytest                           # 121 tests, no network
+python -m pytest                           # 124 tests, no network
 python scripts/verify.py                   # 121 checks against committed results
 ```
 
@@ -189,8 +189,9 @@ To rebuild the paper: `cd paper && pdflatex main && bibtex main && pdflatex main
 [`index.html`](index.html) is a self-contained 16-slide pitch deck — cover and headline metrics,
 the hook, the problem, data, the methodology diagram, five result slides, robustness, limitations
 and dual-use, conclusion, and how to reproduce it. Open the file directly, or serve the repository
-and visit the root. Arrow keys, space, and swipe all navigate; `#7` jumps to a slide; printing
-gives one slide per page.
+and visit the root. It is one continuous page — the slides stack top to bottom, so nothing has to
+be clicked to read it through, and Ctrl-P / Save as PDF captures every slide, one per page.
+Each slide has an anchor, so `#s7` jumps straight to it.
 
 A PDF copy lives at [`docs/deck.pdf`](docs/deck.pdf) — 16:9, one slide per page, for when a link
 will not do. Rebuild it from the same HTML with:

@@ -213,3 +213,60 @@ def test_deck_references_the_same_diagram():
         "the deck no longer points at docs/pipeline.svg; a duplicated figure "
         "will drift from the README's"
     )
+
+
+# --- the deck states counts too, and it drifted twice ------------------------
+# index.html claimed "92 tests" and then "118 tests" after the suite had grown.
+# Prose counts are cheap to write and invisible when they rot, so derive the
+# real number and compare. --collect-only does not execute anything, so this is
+# safe to run from inside a pytest session.
+
+DECK = paths.ROOT / "index.html"
+
+
+def _collected_test_count():
+    import subprocess
+    import sys
+    out = subprocess.run(
+        [sys.executable, "-m", "pytest", "--collect-only", "-q"],
+        capture_output=True, text=True, cwd=str(paths.ROOT),
+    ).stdout
+    for line in reversed(out.splitlines()):
+        m = re.match(r"(\d+) tests? collected", line.strip())
+        if m:
+            return int(m.group(1))
+    return None
+
+
+import re  # noqa: E402  (used by the helper above and the tests below)
+
+
+def test_deck_states_the_real_test_count():
+    n = _collected_test_count()
+    if n is None:
+        pytest.skip("could not determine the collected test count")
+    deck = DECK.read_text(encoding="utf-8")
+    assert "%d tests" % n in deck, (
+        "index.html states a different test count than pytest collects (%d)" % n
+    )
+
+
+def test_readme_states_the_real_test_count():
+    n = _collected_test_count()
+    if n is None:
+        pytest.skip("could not determine the collected test count")
+    text = README.read_text(encoding="utf-8")
+    assert "%d tests" % n in text, (
+        "README states a different test count than pytest collects (%d)" % n
+    )
+
+
+def test_deck_and_readme_agree_on_the_check_count():
+    deck = DECK.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    m = re.search(r"(\d+) checks", readme)
+    assert m, "the README no longer states a check count"
+    assert "%s/%s" % (m.group(1), m.group(1)) in deck or "%s checks" % m.group(1) in deck, (
+        "the deck and the README disagree about how many checks verify.py runs "
+        "(README says %s)" % m.group(1)
+    )

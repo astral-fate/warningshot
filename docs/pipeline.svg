@@ -108,7 +108,7 @@
   <!-- ============ BAND 7: OUTPUTS ============ -->
   <rect x="34" y="718" width="432" height="48" rx="6" fill="#eceff2" stroke="#6b7683"/>
   <text x="50" y="739" class="m">scripts/verify.py</text>
-  <text x="50" y="757" class="s">121 checks recomputed offline · 121 tests, no network</text>
+  <text x="50" y="757" class="s">121 checks recomputed offline · 124 tests, no network</text>
 
   <rect x="514" y="718" width="432" height="48" rx="6" fill="#eceff2" stroke="#6b7683"/>
   <text x="530" y="739" class="m">paper/main.pdf</text>
