@@ -1,0 +1,18 @@
+{
+  "story": "48997548",
+  "hawkesn": {
+    "K": 2.446167514579754,
+    "theta": 0.04816563991820621,
+    "N": 1624.0853200396584,
+    "n_events": 1157,
+    "N_multiplier": 1.403703820258996,
+    "kernel_half_life": 14.390905669208008,
+    "exhaustion": 0.712400996255386,
+    "nll": -2366.928479594447,
+    "span": 181.45027777777779,
+    "at_N_bound": false
+  },
+  "simple_exponential_half_life_h": 7.048573418685242,
+  "kernel_vs_simple_ratio": 2.0416763527012134,
+  "verdict": "pool NOT near exhaustion; decay is kernel-dominated"
+}

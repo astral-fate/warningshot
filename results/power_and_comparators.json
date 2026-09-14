@@ -1,0 +1,70 @@
+{
+  "mde": {
+    "null_median": 11963.5,
+    "null_p90": 26545.4,
+    "null_p95": 27230.399999999998,
+    "observed": 17699.0,
+    "observed_over_median": 1.4794165586993773,
+    "mde_at_p90": 2.2188657165545203,
+    "mde_at_p95": 2.2761232080912777,
+    "n_windows": 13
+  },
+  "june_candidates": {
+    "candidates": [
+      {
+        "page": "Export_control",
+        "baseline": 29.5,
+        "excess": 304.5,
+        "baseline_days": 10.322033898305085
+      },
+      {
+        "page": "Anthropic",
+        "baseline": 11097.0,
+        "excess": 19324.0,
+        "baseline_days": 1.74137154185816
+      },
+      {
+        "page": "Claude_(language_model)",
+        "baseline": 7852.5,
+        "excess": 3457.5,
+        "baseline_days": 0.44030563514804205
+      },
+      {
+        "page": "OpenAI",
+        "baseline": 7619.5,
+        "excess": 2102.5,
+        "baseline_days": 0.27593674125598794
+      },
+      {
+        "page": "United_States_Department_of_Commerce",
+        "baseline": 312.5,
+        "excess": 0,
+        "baseline_days": 0.0
+      },
+      {
+        "page": "Artificial_intelligence",
+        "baseline": 11045.0,
+        "excess": 0,
+        "baseline_days": 0.0
+      }
+    ],
+    "absorbing_page": "Export_control",
+    "absorbing_baseline_days": 10.322033898305085
+  },
+  "inversion_ci": {
+    "point_ratio": 23.060856707239253,
+    "ci_lo": 19.836118581223037,
+    "ci_hi": 40.54187564603961,
+    "n_resamples": 2000,
+    "excludes_one": true,
+    "seed": 11
+  },
+  "control_vs_null": {
+    "page": "Machine_learning",
+    "n_windows": 26,
+    "null_median": 3140.5,
+    "null_max": 7622.0,
+    "observed_excess": 1826.0,
+    "percentile": 30.76923076923077
+  }
+}

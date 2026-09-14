@@ -1,0 +1,8 @@
+page,baseline,baseline_window,excess_48h,bdays_48h,excess_7d,bdays_7d,excess_30d,bdays_30d,peak_date,peak_views,peak_ratio,half_life_days,late_peak_date,late_peak_views,late_peak_ratio,late_exceeds_early,role
+Anthropic,11097.0,20260508..20260606,19324.0,1.74,22428.0,2.02,22428.0,2.02,20260613,20792,1.87,1,20260613,20792,1.87,False,developer
+Claude_(language_model),7852.5,20260508..20260606,3457.5,0.44,3904.5,0.5,3904.5,0.5,20260613,9697,1.23,1,20260613,9697,1.23,False,product
+AI_safety,231.0,20260508..20260606,25.0,0.11,87.0,0.38,121.0,0.52,20260623,265,1.15,1,20260811,333,1.44,True,concept
+AI_alignment,304.0,20260508..20260606,113.0,0.37,387.0,1.27,652.0,2.14,20260618,388,1.28,1,20260806,615,2.02,True,concept
+Existential_risk_from_artificial_intelligence,505.0,20260508..20260606,0,0.0,0,0.0,12.0,0.02,20260617,501,0.99,,20260811,633,1.25,True,concept
+Artificial_general_intelligence,1605.0,20260508..20260606,0,0.0,0,0.0,0,0.0,20260615,1589,0.99,,20260731,1967,1.23,True,concept
+Machine_learning,1991.5,20260508..20260606,61.5,0.03,394.0,0.2,5087.5,2.55,20260622,2657,1.33,1,20260710,5379,2.7,True,generic_control

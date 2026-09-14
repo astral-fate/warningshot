@@ -1,0 +1,141 @@
+{
+  "n_cases": 256,
+  "n_families": 18,
+  "verdicts": {
+    "block": 186,
+    "allow": 69,
+    "warn": 1
+  },
+  "n_attack": 186,
+  "n_benign": 70,
+  "n_fp_dedicated": 22,
+  "n_fp_in_family": 48,
+  "n_benign_high_fp_risk": 24,
+  "by_family": {
+    "mcp_drift": {
+      "n": 6,
+      "block": 4,
+      "allow": 1,
+      "warn": 1
+    },
+    "a2a_agent_card": {
+      "n": 8,
+      "block": 6,
+      "allow": 2,
+      "warn": 0
+    },
+    "a2a_message": {
+      "n": 14,
+      "block": 11,
+      "allow": 3,
+      "warn": 0
+    },
+    "crypto_financial": {
+      "n": 11,
+      "block": 10,
+      "allow": 1,
+      "warn": 0
+    },
+    "encoding_evasion": {
+      "n": 9,
+      "block": 9,
+      "allow": 0,
+      "warn": 0
+    },
+    "false_positive": {
+      "n": 22,
+      "block": 0,
+      "allow": 22,
+      "warn": 0
+    },
+    "headers": {
+      "n": 14,
+      "block": 10,
+      "allow": 4,
+      "warn": 0
+    },
+    "hostname_exfiltration": {
+      "n": 10,
+      "block": 9,
+      "allow": 1,
+      "warn": 0
+    },
+    "mcp_chain": {
+      "n": 17,
+      "block": 13,
+      "allow": 4,
+      "warn": 0
+    },
+    "mcp_input": {
+      "n": 15,
+      "block": 12,
+      "allow": 3,
+      "warn": 0
+    },
+    "mcp_tool": {
+      "n": 32,
+      "block": 23,
+      "allow": 9,
+      "warn": 0
+    },
+    "request_body": {
+      "n": 25,
+      "block": 18,
+      "allow": 7,
+      "warn": 0
+    },
+    "response_fetch": {
+      "n": 9,
+      "block": 6,
+      "allow": 3,
+      "warn": 0
+    },
+    "response_mitm": {
+      "n": 9,
+      "block": 8,
+      "allow": 1,
+      "warn": 0
+    },
+    "shell_obfuscation": {
+      "n": 10,
+      "block": 8,
+      "allow": 2,
+      "warn": 0
+    },
+    "ssrf_bypass": {
+      "n": 11,
+      "block": 10,
+      "allow": 1,
+      "warn": 0
+    },
+    "url": {
+      "n": 23,
+      "block": 20,
+      "allow": 3,
+      "warn": 0
+    },
+    "websocket_dlp": {
+      "n": 11,
+      "block": 9,
+      "allow": 2,
+      "warn": 0
+    }
+  },
+  "confusable_families_present": [
+    "encoding_evasion",
+    "hostname_exfiltration",
+    "shell_obfuscation",
+    "websocket_dlp",
+    "request_body"
+  ],
+  "measurable": [
+    "specificity: how often a detector fires on non-covert attack traffic",
+    "false-positive rate against 22 purpose-built over-blocking traps",
+    "the harder false-positive test: benign controls inside attack families, which resemble the attack they sit beside",
+    "per-family firing rates across 18 independent attack families"
+  ],
+  "not_measurable": [
+    "sensitivity to covert channels: absent from this corpus by design (agent-egress-bench README: 'Covert channels. Timing, header ordering, HTTP/2 framing, and steganography are out of scope by design.')",
+    "detection on agent transcripts: these cases are wire payloads, not multi-step agent episodes"
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "hn_thread_null": {
+    "pool_size": 128,
+    "n_fitted": 30,
+    "observed_half_life_h": 7.048573418685242,
+    "percentile": 33.33333333333333,
+    "null_min": 5.757974809546187,
+    "null_p25": 6.8758691823842675,
+    "null_median": 7.6892598816987725,
+    "null_p75": 8.79862043559255,
+    "null_max": 16.943216975614845,
+    "threads": [
+      {
+        "story_id": "49076057",
+        "points": 1180,
+        "n_comments": 1722,
+        "half_life_h": 5.757974809546187,
+        "r2": 0.8109917468898238,
+        "title": "Our position on open-weights models"
+      },
+      {
+        "story_id": "48569278",
+        "points": 1084,
+        "n_comments": 572,
+        "half_life_h": 5.773332617769944,
+        "r2": 0.6650792227986215,
+        "title": "Sixty percent of US consumers say 'AI' in brand messaging is a turnoff"
+      },
+      {
+        "story_id": "49241679",
+        "points": 1209,
+        "n_comments": 635,
+        "half_life_h": 6.092086517965316,
+        "r2": 0.8014183003634286,
+        "title": "Muse Glimmer: 30B-parameter model optimized for always-on local agent workflows"
+      },
+      {
+        "story_id": "48979269",
+        "points": 1243,
+        "n_comments": 924,
+        "half_life_h": 6.416792033996788,
+        "r2": 0.7670530570590481,
+        "title": "China\u2019s open-weights AI strategy is winning"
+      },
+      {
+        "story_id": "48500012",
+        "points": 1467,
+        "n_comments": 526,
+        "half_life_h": 6.4682405504073905,
+        "r2": 0.6999502292343232,
+        "title": "AI agent bankrupted their operator while trying to scan DN42"
+      },
+      {
+        "story_id": "49371857",
+        "points": 1061,
+        "n_comments": 577,
+        "half_life_h": 6.839416489044888,
+        "r2": 0.6924615387891466,
+        "title": "Don't paste the AI, please"
+      },
+      {
+        "story_id": "48511908",
+        "points": 1603,
+        "n_comments": 470,
+        "half_life_h": 6.8506927534378175,
+        "r2": 0.8214586224932157,
+        "title": "Open source AI must win"
+      },
+      {
+        "story_id": "48886741",
+        "points": 1102,
+        "n_comments": 451,
+        "half_life_h": 6.864001429123747,
+        "r2": 0.835286887805314,
+        "title": "Ask HN: Add flag for AI-generated articles"
+      },
+      {
+        "story_id": "48434312",
+        "points": 1151,
+        "n_comments": 1055,
+        "half_life_h": 6.911472442165828,
+        "r2": 0.8409120265470776,
+        "title": "LLMs are eroding my software engineering career and I don't know what to do"
+      },
+      {
+        "story_id": "49023016",
+        "points": 1069,
+        "n_comments": 870,
+        "half_life_h": 7.004285481865505,
+        "r2": 0.7906577491421397,
+        "title": "Startup founders urge U.S. government not to shut off Chinese open weight AI"
+      },
+      {
+        "story_id": "48421442",
+        "points": 1484,
+        "n_comments": 496,
+        "half_life_h": 7.09039064164855,
+        "r2": 0.7752799863083877,
+        "title": "S&P 500 rejects SpaceX, also blocking entry for OpenAI and Anthropic"
+      },
+      {
+        "story_id": "49433292",
+        "points": 1312,
+        "n_comments": 1276,
+        "half_life_h": 7.290222717692263,
+        "r2": 0.8334753698464142,
+        "title": "Apple introduces M6 and M5 Ultra"
+      },
+      {
+        "story_id": "48470248",
+        "points": 1021,
+        "n_comments": 534,
+        "half_life_h": 7.292873582844112,
+        "r2": 0.7180074156456101,
+        "title": "German ruling declares Google liable for false answers in AI Overviews"
+      },
+      {
+        "story_id": "49336573",
+        "points": 1119,
+        "n_comments": 684,
+        "half_life_h": 7.393294298364062,
+        "r2": 0.8363229593918854,
+        "title": "AI;DR (AI; Didn't Read)"
+      },
+      {
+        "story_id": "48689028",
+        "points": 1139,
+        "n_comments": 735,
+        "half_life_h": 7.680580231543942,
+        "r2": 0.834758515839709,
+        "title": "Previewing GPT\u20115.6 Sol: a next-generation model"
+      },
+      {
+        "story_id": "48542100",
+        "points": 1318,
+        "n_comments": 540,
+        "half_life_h": 7.697939531853603,
+        "r2": 0.8801137722994012,
+        "title": "Ask HN: Has anyone replaced Claude/GPT with a local model for daily coding?"
+      },
+      {
+        "story_id": "48865019",
+        "points": 1660,
+        "n_comments": 933,
+        "half_life_h": 7.898729105640809,
+        "r2": 0.8121048922602631,
+        "title": "Apple sues OpenAI, accuses ex-employees of stealing trade secrets"
+      },
+      {
+        "story_id": "48385906",
+        "points": 1062,
+        "n_comments": 385,
+        "half_life_h": 8.053609069848205,
+        "r2": 0.7146477575473101,
+        "title": "Gemma 4 12B: A unified, encoder-free multimodal model"
+      },
+      {
+        "story_id": "49458418",
+        "points": 1034,
+        "n_comments": 701,
+        "half_life_h": 8.14574634201307,
+        "r2": 0.6998072915753776,
+        "title": "CEO fired developers to make room for AI. Developers create open source AI CEO"
+      },
+      {
+        "story_id": "49063022",
+        "points": 1340,
+        "n_comments": 1097,
+        "half_life_h": 8.271065136692949,
+        "r2": 0.5962538644610214,
+        "title": "US citizen charged after GrapheneOS phone wipes during airport search"
+      },
+      {
+        "story_id": "48555993",
+        "points": 1596,
+        "n_comments": 595,
+        "half_life_h": 8.393269738759026,
+        "r2": 0.7273885475739235,
+        "title": "Running local models is good now"
+      },
+      {
+        "story_id": "48845049",
+        "points": 1160,
+        "n_comments": 351,
+        "half_life_h": 8.64601104354706,
+        "r2": 0.7136755604677174,
+        "title": "Show HN: 18 Words"
+      },
+      {
+        "story_id": "49124218",
+        "points": 1680,
+        "n_comments": 397,
+        "half_life_h": 8.849490232941047,
+        "r2": 0.7336722158149771,
+        "title": "Show HN: Elevators"
+      },
+      {
+        "story_id": "48924912",
+        "points": 1227,
+        "n_comments": 283,
+        "half_life_h": 9.229259138931099,
+        "r2": 0.7023197621516759,
+        "title": "Inkling: Our Open-Weights Model"
+      },
+      {
+        "story_id": "48445554",
+        "points": 1181,
+        "n_comments": 207,
+        "half_life_h": 9.310501527254173,
+        "r2": 0.7030688042275648,
+        "title": "Show HN: Performative-UI \u2013 A react component library of design tropes"
+      },
+      {
+        "story_id": "48956688",
+        "points": 1228,
+        "n_comments": 623,
+        "half_life_h": 10.250146584292185,
+        "r2": 0.5929212472332702,
+        "title": "LG monitors silently install software through Windows Update without consent"
+      },
+      {
+        "story_id": "49337392",
+        "points": 1071,
+        "n_comments": 799,
+        "half_life_h": 10.367260228160408,
+        "r2": 0.5616278132009513,
+        "title": "Israel creates fake think tank in likely attempt to dupe AI chatbots"
+      },
+      {
+        "story_id": "48490024",
+        "points": 1481,
+        "n_comments": 349,
+        "half_life_h": 10.38534046609128,
+        "r2": 0.5413117632969544,
+        "title": "Show HN: Homebrew 6.0.0"
+      },
+      {
+        "story_id": "49008211",
+        "points": 1033,
+        "n_comments": 234,
+        "half_life_h": 10.519065210996224,
+        "r2": 0.5225635580068866,
+        "title": "Show HN: Bento - An entire PowerPoint in one HTML file (edit+view+data+collab)"
+      },
+      {
+        "story_id": "48968606",
+        "points": 2935,
+        "n_comments": 342,
+        "half_life_h": 16.943216975614845,
+        "r2": 0.23544378563901114,
+        "title": "Show HN: I replaced a $120k bowling center system with $1,600 in ESP32s"
+      }
+    ]
+  },
+  "disclosure_ratio": {
+    "page": "Hugging_Face",
+    "window": [
+      "20260131",
+      "20260715"
+    ],
+    "n_days": 166,
+    "observed_ratio": 1.22,
+    "percentile": 90.96385542168674,
+    "days_at_or_above": 15,
+    "min": 0.48807854137447404,
+    "median": 1.0009221143512868,
+    "p75": 1.1112495748349187,
+    "p90": 1.208120242858109,
+    "max": 1.547008547008547
+  },
+  "inversion_units": {
+    "victim": {
+      "page": "Hugging_Face",
+      "baseline": 701.5,
+      "excess": 28170.5,
+      "baseline_days": 40.15751960085531
+    },
+    "developer_july": {
+      "page": "OpenAI",
+      "baseline": 6571.0,
+      "excess": 2298.0,
+      "baseline_days": 0.3497184598995587
+    },
+    "developer_june": {
+      "page": "Anthropic",
+      "baseline": 11097.0,
+      "excess": 19324.0,
+      "baseline_days": 1.74137154185816
+    },
+    "victim_vs_june_dev_raw": 1.4577985924239287,
+    "victim_vs_june_dev_baseline_days": 23.060856707239253,
+    "june_dev_vs_july_dev_raw": 8.40905134899913,
+    "june_dev_vs_july_dev_baseline_days": 4.979352655156644
+  },
+  "resolution_control": {
+    "hourly_half_life_h": 7.048573418685242,
+    "hourly_half_life_d": 0.2936905591118851,
+    "hourly_r2": 0.7869014788189452,
+    "hourly_bins": 48,
+    "daily_half_life_d": 0.7594092508951619,
+    "daily_r2": 0.7470792744669984,
+    "daily_bins": 8,
+    "daily_counts": [
+      1064,
+      60,
+      22,
+      7,
+      1,
+      1,
+      0,
+      2
+    ],
+    "ratio_hourly": 18.556946523853888,
+    "ratio_daily": 7.176631037317169
+  },
+  "halflife_ratio": {
+    "lookups_half_life_d": 5.449715505739593,
+    "media_half_life_d": 6.106138407252115,
+    "point_ratio": 1.1204508567137466,
+    "ci_lo": 0.7882642092643365,
+    "ci_hi": 1.7399516174922587,
+    "n_resamples": 2000,
+    "contains_one": true,
+    "seed": 4,
+    "block": 4
+  }
+}

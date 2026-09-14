@@ -1,0 +1,12 @@
+# Normalise line endings in the repository; check out native on each platform.
+* text=auto eol=lf
+
+# Binary artifacts — never touch.
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.gz   binary
+
+# Committed API cache: large, machine-generated, and not worth diffing.
+cache/*.json linguist-generated=true -diff
+results/*.json -diff

@@ -1,0 +1,40 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Session/tooling state, not part of the artifact.
+.omc/
+
+# LaTeX build products. main.pdf IS committed (it is the deliverable); the
+# intermediates that regenerate it are not.
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.toc
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/b[0-9].log
+paper/bb.log
+
+# Editor/working backups.
+*.bak
+*.bak[0-9]*
+*.pre8pp
+*.orig
+
+# Drafting notes kept locally, not shipped with the artifact.
+paper/REVIEW*.md
+
+# cache/, out/ and results/ are deliberately NOT ignored.
+#
+# The paper's reproducibility claim is that a reader can rerun every number at zero cost and
+# with no credentials. That holds only if the cached API responses ship with the repository:
+# without them a clean clone must re-fetch ~25 pageview series, a paginated Hacker News thread
+# and a GDELT timeline that rate-limits to one request every five seconds, and three tests plus
+# five verify.py checks skip until it does.
+#
+# Ignoring them cost nothing on the development machine, where the files already existed, and
+# broke the claim everywhere else. Together they are ~3.5 MB.

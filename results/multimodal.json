@@ -1,0 +1,204 @@
+{
+  "channels": [
+    {
+      "channel": "lookups",
+      "unit": "days",
+      "n_points": 26,
+      "half_life": 5.449715505739593,
+      "half_life_ci": [
+        4.636636702565108,
+        6.590240963824323
+      ],
+      "exponential_r2": 0.8175423719361538,
+      "best_model": "two_phase",
+      "models": [
+        {
+          "model": "two_phase",
+          "switch_day": 20.0,
+          "tau": 7.785262332789606,
+          "half_life": 5.396332635892658,
+          "alpha": 10.558452485695064,
+          "r2": 0.8831352328717825,
+          "aic": -43.030429813160985,
+          "n": 26
+        },
+        {
+          "model": "exponential",
+          "tau": 7.8622775343862,
+          "half_life": 5.449715505739593,
+          "amplitude": 8809.928497948975,
+          "r2": 0.8175423719361538,
+          "aic": -37.447415739867324,
+          "n": 26
+        },
+        {
+          "model": "power_law",
+          "alpha": 1.1249299502065275,
+          "amplitude": 22407.624264439608,
+          "r2": 0.7674360382575023,
+          "aic": -31.138585409757454,
+          "n": 26
+        }
+      ],
+      "source": "en.wikipedia/Hugging_Face",
+      "peak_date": "20260722",
+      "baseline": 701.5,
+      "half_life_days": 5.449715505739593
+    },
+    {
+      "channel": "media",
+      "unit": "days",
+      "n_points": 26,
+      "half_life": 6.106138407252115,
+      "half_life_ci": [
+        4.824224990005184,
+        8.85862036052562
+      ],
+      "exponential_r2": 0.6304626013383121,
+      "best_model": "two_phase",
+      "models": [
+        {
+          "model": "two_phase",
+          "switch_day": 21.0,
+          "tau": 15.77992077029149,
+          "half_life": 10.937807591386866,
+          "alpha": 1.3054521268677606,
+          "r2": 0.7721294883238731,
+          "aic": -24.826615834843423,
+          "n": 26
+        },
+        {
+          "model": "exponential",
+          "tau": 8.80929559912426,
+          "half_life": 6.106138407252115,
+          "amplitude": 0.14803988237229093,
+          "r2": 0.6304626013383121,
+          "aic": -18.25628109343442,
+          "n": 26
+        },
+        {
+          "model": "power_law",
+          "alpha": 0.9580671454886092,
+          "amplitude": 0.30564548340259057,
+          "r2": 0.5389119450943598,
+          "aic": -12.501516916649546,
+          "n": 26
+        }
+      ],
+      "source": "GDELT \"Hugging Face\" OpenAI",
+      "peak_date": "20260722",
+      "baseline": 0.00195,
+      "half_life_days": 6.106138407252115
+    },
+    {
+      "channel": "engagement",
+      "unit": "hours",
+      "n_points": 48,
+      "half_life": 7.048573418685242,
+      "half_life_ci": [
+        6.03551012972135,
+        8.492274217502047
+      ],
+      "exponential_r2": 0.7869014788189452,
+      "best_model": "two_phase",
+      "models": [
+        {
+          "model": "two_phase",
+          "switch_day": 25.0,
+          "tau": 12.175815330802582,
+          "half_life": 8.439632067564368,
+          "alpha": 0.1466627360600178,
+          "r2": 0.8680229589090033,
+          "aic": -41.07708526642458,
+          "n": 41
+        },
+        {
+          "model": "exponential",
+          "tau": 10.168941916478966,
+          "half_life": 7.048573418685242,
+          "amplitude": 107.15546570111381,
+          "r2": 0.7869014788189452,
+          "aic": -27.43289371535726,
+          "n": 41
+        },
+        {
+          "model": "power_law",
+          "alpha": 1.3583508353457083,
+          "amplitude": 553.4997523764625,
+          "r2": 0.6748242637735594,
+          "aic": -10.105836011295978,
+          "n": 41
+        }
+      ],
+      "source": "HN story 48997548",
+      "story_title": "OpenAI and Hugging Face address security incident during model evaluation",
+      "story_points": 1632,
+      "n_comments": 1157,
+      "peak_date": "hour 0",
+      "baseline": 0.0,
+      "half_life_days": 0.2936905591118851
+    }
+  ],
+  "spread": {
+    "half_lives_days": {
+      "lookups": 5.449715505739593,
+      "media": 6.106138407252115,
+      "engagement": 0.2936905591118851
+    },
+    "slowest": "media",
+    "fastest": "engagement",
+    "ratio": 20.791061264335383,
+    "ci_days": {
+      "lookups": [
+        4.636636702565108,
+        6.590240963824323
+      ],
+      "media": [
+        4.824224990005184,
+        8.85862036052562
+      ],
+      "engagement": [
+        0.25147958873838955,
+        0.3538447590625853
+      ]
+    },
+    "pairwise": [
+      {
+        "a": "lookups",
+        "b": "media",
+        "intervals_overlap": true,
+        "separated": false
+      },
+      {
+        "a": "lookups",
+        "b": "engagement",
+        "intervals_overlap": false,
+        "separated": true
+      },
+      {
+        "a": "media",
+        "b": "engagement",
+        "intervals_overlap": false,
+        "separated": true
+      }
+    ]
+  },
+  "second_impulse": [
+    {
+      "horizon_days": 25,
+      "n_points": 26,
+      "best_model": "two_phase",
+      "r2": 0.8831352328717825,
+      "switch_day": 20.0,
+      "contains_second_impulse": false
+    },
+    {
+      "horizon_days": 45,
+      "n_points": 44,
+      "best_model": "two_phase",
+      "r2": 0.6317024403117808,
+      "switch_day": 36.0,
+      "contains_second_impulse": true
+    }
+  ]
+}

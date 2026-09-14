@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="782" viewBox="0 0 980 782" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8c959f"/>
+    </marker>
+    <style>
+      .t   { font-size: 14px; font-weight: 600; fill: #1f2328; }
+      .s   { font-size: 12px; fill: #57606a; }
+      .m   { font-size: 11.5px; fill: #1f2328; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .ms  { font-size: 11px;  fill: #57606a; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .lbl { font-size: 11px; font-weight: 700; fill: #57606a; letter-spacing: .08em; }
+      .arw { stroke: #8c959f; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    </style>
+  </defs>
+
+  <rect width="980" height="782" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="979" height="781" fill="none" stroke="#d0d7de" rx="8"/>
+
+  <text x="34" y="38" class="t" font-size="17">warningshot — measurement pipeline</text>
+  <text x="34" y="58" class="s">Three public channels → one cache → fits and nulls → committed results → a paper that cannot disagree with them.</text>
+
+  <!-- ============ BAND 1: SOURCES ============ -->
+  <text x="34" y="92" class="lbl">SOURCES · public, keyless</text>
+  <g>
+    <rect x="34" y="102" width="296" height="62" rx="6" fill="#eef4fb" stroke="#5b8ac6"/>
+    <text x="50" y="124" class="t">Wikimedia Pageviews</text>
+    <text x="50" y="142" class="ms">agent=user · daily · en.wikipedia</text>
+    <text x="50" y="157" class="s">channel: lookups</text>
+
+    <rect x="342" y="102" width="296" height="62" rx="6" fill="#eef4fb" stroke="#5b8ac6"/>
+    <text x="358" y="124" class="t">Hacker News (Algolia)</text>
+    <text x="358" y="142" class="ms">comment timestamps · hourly</text>
+    <text x="358" y="157" class="s">channel: engagement</text>
+
+    <rect x="650" y="102" width="296" height="62" rx="6" fill="#eef4fb" stroke="#5b8ac6"/>
+    <text x="666" y="124" class="t">GDELT DOC 2.0</text>
+    <text x="666" y="142" class="ms">timelinevol · daily</text>
+    <text x="666" y="157" class="s">channel: media</text>
+  </g>
+
+  <path class="arw" d="M182 164 V 196"/>
+  <path class="arw" d="M490 164 V 196"/>
+  <path class="arw" d="M798 164 V 196"/>
+
+  <!-- ============ BAND 2: CACHE ============ -->
+  <rect x="34" y="198" width="912" height="56" rx="6" fill="#fff6e5" stroke="#d9a33a"/>
+  <text x="50" y="220" class="t">cache/ — SHA-keyed on-disk responses, committed to the repository</text>
+  <text x="50" y="240" class="s">Freezes the artifact: HN scores keep accruing, GDELT rate-limits to 1 req / 5 s. A clean clone reproduces everything offline, at $0, with no credentials.</text>
+
+  <path class="arw" d="M490 254 V 288"/>
+
+  <!-- ============ BAND 3: SERIES ============ -->
+  <rect x="34" y="290" width="912" height="52" rx="6" fill="#f6f8fa" stroke="#afb8c1"/>
+  <text x="50" y="312" class="m">data/modalities.py</text>
+  <text x="50" y="331" class="s">aligns the three channels onto a common event clock (t₀ = attribution, 21 Jul 2026) with a 7-day gap before each baseline window</text>
+
+  <path class="arw" d="M182 342 V 378"/>
+  <path class="arw" d="M490 342 V 378"/>
+  <path class="arw" d="M798 342 V 378"/>
+
+  <!-- ============ BAND 4: ESTIMATION ============ -->
+  <text x="34" y="370" class="lbl">ESTIMATION</text>
+  <g>
+    <rect x="34" y="380" width="296" height="92" rx="6" fill="#eef7f0" stroke="#4e9a5f"/>
+    <text x="50" y="402" class="m">core/metrics.py</text>
+    <text x="50" y="422" class="s">baseline = median(quiet window)</text>
+    <text x="50" y="439" class="s">excess = Σ max(0, v − b)</text>
+    <text x="50" y="456" class="s">baseline-days = excess / b</text>
+
+    <rect x="342" y="380" width="296" height="92" rx="6" fill="#eef7f0" stroke="#4e9a5f"/>
+    <text x="358" y="402" class="m">core/regression.py</text>
+    <text x="358" y="422" class="s">exponential · power-law · two-phase</text>
+    <text x="358" y="439" class="s">AIC + 2·ln C selection penalty</text>
+    <text x="358" y="456" class="s">moving-block bootstrap (b=4, n=800)</text>
+
+    <rect x="650" y="380" width="296" height="92" rx="6" fill="#eef7f0" stroke="#4e9a5f"/>
+    <text x="666" y="402" class="m">core/hawkesn.py</text>
+    <text x="666" y="422" class="s">HawkesN MLE on the comment thread</text>
+    <text x="666" y="439" class="s">separates kernel decay (θ)</text>
+    <text x="666" y="456" class="s">from population exhaustion (n/N)</text>
+  </g>
+
+  <path class="arw" d="M182 472 V 508"/>
+  <path class="arw" d="M490 472 V 508"/>
+  <path class="arw" d="M798 472 V 508"/>
+
+  <!-- ============ BAND 5: NULLS ============ -->
+  <text x="34" y="500" class="lbl">NULLS · nothing is claimed without a distribution</text>
+  <rect x="34" y="510" width="912" height="86" rx="6" fill="#fdeef2" stroke="#c25a7a"/>
+  <text x="50" y="532" class="m">eval/nulls.py</text>
+  <text x="50" y="553" class="s">① season-matched concept null — 13 × 30-day windows, Jun–Sep of 2024 &amp; 2025</text>
+  <text x="50" y="570" class="s">② daily-ratio null — 166 prior days</text>
+  <text x="50" y="587" class="s">③ thread null — 30 comparable front-page threads (rule fixed before any fit)</text>
+  <text x="530" y="553" class="s">④ matched event — 13 Jun export-control ban</text>
+  <text x="530" y="570" class="s">⑤ generic control — Machine_learning page</text>
+  <text x="530" y="587" class="s">+ direct ratio bootstrap, not interval overlap</text>
+
+  <path class="arw" d="M490 596 V 630"/>
+
+  <!-- ============ BAND 6: RESULTS ============ -->
+  <rect x="34" y="632" width="912" height="52" rx="6" fill="#f2eefb" stroke="#7d63c4"/>
+  <text x="50" y="654" class="m">results/*.json</text>
+  <text x="50" y="673" class="s">multimodal · robustness · nulls · power_and_comparators · hawkesn_engagement — committed, so every number has a fixed provenance</text>
+
+  <path class="arw" d="M250 684 V 704 H 200 V 716"/>
+  <path class="arw" d="M730 684 V 704 H 780 V 716"/>
+
+  <!-- ============ BAND 7: OUTPUTS ============ -->
+  <rect x="34" y="718" width="432" height="48" rx="6" fill="#eceff2" stroke="#6b7683"/>
+  <text x="50" y="739" class="m">scripts/verify.py</text>
+  <text x="50" y="757" class="s">67 checks recomputed offline · 92 tests, no network</text>
+
+  <rect x="514" y="718" width="432" height="48" rx="6" fill="#eceff2" stroke="#6b7683"/>
+  <text x="530" y="739" class="m">paper/main.pdf</text>
+  <text x="530" y="757" class="s">8-page body · refs + appendix excluded</text>
+</svg>

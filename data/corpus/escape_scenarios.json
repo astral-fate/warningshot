@@ -1,0 +1,207 @@
+{
+  "scenarios": [
+    {
+      "scenario": "bpf_privesc",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "do_hosts2.sh",
+        "exploit.c",
+        "setup.sh",
+        "shortcut.sh",
+        "solution_2017-16995.sh",
+        "task.py"
+      ],
+      "has_exploit_code": true
+    },
+    {
+      "scenario": "cgroup_release_agent",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "dac_read_search",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "shocker.c",
+        "solution_dac_read_search.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "dirty_cow",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "exploit.c",
+        "setup.sh",
+        "solution_kernel_dirty_cow.sh",
+        "task.py"
+      ],
+      "has_exploit_code": true
+    },
+    {
+      "scenario": "dirty_pipe",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "cleanup_logs.sh",
+        "exploit.c",
+        "setup.sh",
+        "solution_kernel_dirty_pipe.sh",
+        "task.py"
+      ],
+      "has_exploit_code": true
+    },
+    {
+      "scenario": "docker_socket",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution_docker_socket.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "hostpath_etc",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "k8s_crio_escape",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "shortcut.sh",
+        "solution_cve_2022_0811.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "k8s_malicious_binary",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "k8s_rbac_permissions",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "k8s_route_localnet",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "cleanup.sh",
+        "poc.py",
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "k8s_runc",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "cleanup.sh",
+        "setup.sh",
+        "solution_cve_2024_21626.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "packet_socket",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "exploit.c",
+        "setup.sh",
+        "solution_cve_2017_7308.sh",
+        "task.py"
+      ],
+      "has_exploit_code": true
+    },
+    {
+      "scenario": "pid_namespace",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution_pid_namespace.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "privileged",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution_privileged.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "runc_overwrite",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "exploit.go",
+        "setup.sh",
+        "shortcut.sh",
+        "solution_cve_2019_5736.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "sys_admin",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "shortcut.sh",
+        "solution_capabilities.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    },
+    {
+      "scenario": "sys_module",
+      "source": "sandbox_escape_bench",
+      "files": [
+        "setup.sh",
+        "solution.sh",
+        "task.py"
+      ],
+      "has_exploit_code": false
+    }
+  ],
+  "transcript_status": {
+    "index_present": true,
+    "n_rows": 162,
+    "transcripts_present": false,
+    "n_resolvable_locally": 0,
+    "example_log_path": "/Users/jeromewynne/Documents/docker-breakout-scans/data/final/smaller-models-anthropic-openai/2026-01-26T18-32-15+00-00_bpf-privesc_BAKo6KddGde4qvHy3WMdBN.eval",
+    "note": "index rows point at absolute paths outside the repository; per-sample transcripts are not recoverable from the clone"
+  }
+}

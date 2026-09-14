@@ -1,0 +1,784 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.9in]{geometry}
+% lmodern supplies scalable Type1 fonts; without it microtype's font expansion
+% is a fatal error on a stock MiKTeX install (bitmap CM fonts are not scalable).
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+}
+
+\title{\textbf{Whose Page Did You Count?}\\
+Counting-Dependence and a Null Result in\\
+Measuring Attention to an AI Incident}
+\author{Fatimah Emad Eldin\\\small Independent researcher, Trouv\'e Works\\\small\texttt{Fatimah@trouve.works}}
+\date{September 2026\\\small Apart Research \& CeSIA\\\small AI Incident Response Sprint — Track 4 (Communication)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+How much attention did an AI incident get? The answer depends on a choice nobody
+states: which page you count. Re-measuring the July 2026 OpenAI/Hugging Face
+intrusion, the published finding that June's export-control ban drew roughly
+seven times more attention inverts once the page that absorbed the attention is
+counted instead of the developer's: the breached party's page outdrew
+\emph{every} June comparator tested, \textbf{in both raw and baseline-normalised
+units}. The direction is robust across all six comparators; no single multiple
+is, and we decompose why. Second, a season-matched placebo null puts the 30-day
+response of AI-risk concept pages at the \textbf{53.8th percentile} of ordinary
+drift — no detectable movement in the vocabulary the warning shot was about,
+bounded by a design blind to responses below about $2.2\times$ drift. Third, a
+cross-channel decay comparison that looks headline-grade does not survive its
+null: the incident's discussion thread sits at the \textbf{33rd percentile} of
+thirty comparable front-page threads, so that half-life measures the platform
+and not the event. Code, cached fixtures and a \texttt{verify.py} that
+recomputes every number accompany the report.
+\end{abstract}
+
+%====================================================================
+\section{Introduction}
+%====================================================================
+
+``We keep saying we need warning shots. Then one arrives, and it barely travels
+beyond the usual circles.'' That framing---the sprint brief's own---describes
+the reception of the July 2026 incident in which OpenAI models, running a
+cybersecurity evaluation with safety classifiers deliberately disabled, escaped
+their sandbox and conducted an autonomous multi-day intrusion against Hugging
+Face \cite{hf2026anatomy,metr2026investigation}.
+
+That claim is not idle: it is the premise of a strategic argument about how the
+field should communicate the next one. As published it rests on a conversion
+scorecard taken, in its author's own words, ``forty-eight hours in''
+\cite{segerie2026warningshot}, on excess-traffic comparisons between Wikipedia
+pages, and on no null distribution at all. This paper measures it rather than
+arguing with it, and finds two of the numbers behind it to be artifacts of
+unstated choices --- while a third, the one about the risk vocabulary, survives
+a proper null and is the more important of the two.
+
+\paragraph{Three dates.} On \textbf{16 July 2026} Hugging Face disclosed a
+breach of unknown attribution. On \textbf{21 July} OpenAI acknowledged its own
+models were responsible. On \textbf{26 August} OpenAI published a technical
+report and METR with Redwood Research published an independent investigation
+\cite{metr2026investigation}, on the same day.
+
+\paragraph{Contribution.}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item \textbf{Reach comparisons are counting-dependent, and the published one
+inverts.} Measured on the page that actually absorbed the attention, and in the
+normalised units the method requires, the July incident outdrew every June
+comparator tested in \emph{both} unit systems --- against a published claim that
+the ban drew roughly $7\times$ more (§\ref{sec:counting}). ``How much attention
+did this get'' has no answer until you say whose page you counted. The
+correction is itself comparator-dependent, spanning $3.9\times$ to
+$145.5\times$, and we decompose why rather than quote a number.
+\item \textbf{A season-matched placebo null shows no detectable movement in the
+risk vocabulary.} The 30-day response of four AI-risk concept pages sits at the
+\textbf{53.8th percentile} of what those same pages do in the same calendar
+season of prior years (§\ref{sec:null}). The warning shot moved organisations,
+not concepts.
+\item \textbf{A disclosure-versus-attribution contrast.} The victim's own
+disclosure produced a top-decile but ordinary day ($1.22\times$ baseline, 91st
+percentile of that page's daily variation); attribution to a named lab produced
+$24.7\times$, roughly sixteen times beyond the largest ratio observed in the
+preceding 166 days (§\ref{sec:attribution}).
+\item \textbf{A result that does not survive its null.} A cross-channel decay
+comparison, headline-grade on its face, fails the null built for it: the
+incident's Hacker News thread sits at the \textbf{33rd percentile} of 30
+comparable front-page threads, so that half-life measures the platform and not
+the event (§\ref{sec:failed}).
+\item \textbf{Released, checkable artifacts.} A \texttt{verify.py} recomputes 67
+headline numbers from the committed results and prints agreement counts; 92
+tests run with no network; every data source is public and keyless.
+\end{enumerate}
+
+%====================================================================
+\section{Related Work}
+\label{sec:related}
+%====================================================================
+
+\paragraph{Attention decay is a mature literature, and we are late to it.}
+Wu and Huberman \cite{wu2007novelty} measured collective attention across a
+million Digg users and found novelty decaying by a stretched-exponential law,
+very fast in the first two to three hours --- the canonical result for exactly
+the object our engagement channel measures, published in 2007. Crane and
+Sornette \cite{crane2008robust} classified endogenous versus exogenous bursts
+across five million YouTube videos with a Hawkes-like mechanism; Candia et al.\
+\cite{candia2019universal} report a \emph{universal biexponential} decay of
+collective memory; Lorenz-Spreen et al.\ \cite{lorenzspreen2019accelerating}
+show bursts dissipating on \emph{decreasing} timescales as a finite attention
+budget is exhausted. These bound the contribution sharply. \textbf{An
+hours-scale decay on an aggregator thread is not a finding} --- it is what
+\cite{wu2007novelty} established nineteen years ago, and §\ref{sec:failed}
+reproduces it --- and the two-regime form fitted after
+\cite{igarashi2022twophase} sits inside the established biexponential family
+rather than extending it.
+
+\paragraph{Wikipedia pageviews, and cross-channel comparison.}
+Garc\'ia-Gavilanes, Tsvetkova and Yasseri \cite{garciagavilanes2016crashes}
+established the pageview method on aircraft crashes, reporting decay
+independent of the number of deaths and ``a fast decay within about a week'' as
+universal; Igarashi et al.\ \cite{igarashi2022twophase} fit a two-phase model
+with a switching point around 10--11 days across earthquakes, notable deaths,
+aviation accidents, mass murders and terrorist attacks. \textbf{The methods
+here are theirs.} Gozzi et al.\ \cite{gozzi2020covid} compare Reddit and
+Wikipedia during COVID-19 and find topic agreement with temporal deviations;
+Arnold et al.\ \cite{arnold2020hurricanes} characterise disaster attention
+across Twitter $n$-grams. On AI incidents specifically, the OECD
+\cite{oecd2026trends} clusters reports into 14 themes without per-incident decay
+fitting, and Abraham et al.\ \cite{abraham2026publichealth} propose a
+public-health framework using no attention metrics.
+
+\paragraph{Entity choice is established elsewhere, in another channel.}
+Cavusoglu, Mishra and Raghunathan \cite{cavusoglu2004breach} ran the structural
+twin of §\ref{sec:counting} two decades ago in the valuation channel: an event
+study of internet security-breach announcements measured on \emph{breached
+firms} and separately on \emph{security developers} found opposite signs ---
+breached firms lost about 2.1\,\% of market value within two days, while
+developers' value moved positively on the same news. ``How did the market
+respond to this breach'' already depended entirely on whose ticker was counted.
+
+\paragraph{What is left as new.} Not the decay methods, not the two-regime form,
+not the speed of aggregator threads, and \textbf{not the entity-choice problem
+itself}. The contribution is the transfer of that problem into the attention
+channel --- where the field measuring warning shots actually works --- a
+demonstration that the transfer inverts a published claim, and the finding that
+the normalisation required to make pages comparable introduces a
+comparator-dependence of its own (§\ref{sec:counting}). The bounded search
+behind that novelty claim is in App.~\ref{sec:searchprotocol}.
+
+%====================================================================
+\section{Data and Method}
+%====================================================================
+
+\subsection{Sources}
+
+Three public, keyless sources: Wikimedia Pageviews \cite{wikimedia2026pageviews}
+with \texttt{agent=user}, which excludes traffic Wikimedia flags as automated;
+the Hacker News Algolia search API for story scores and comment timestamps; and
+GDELT DOC 2.0 \cite{gdelt2026doc} for coverage volume. Responses are cached on
+first fetch. Hacker News scores keep accruing --- a published figure of
+$1{,}522$ points replicates as $1{,}632$ today --- so the cache is what freezes
+the artifact. Retrieving comment timestamps requires walking backwards with a
+\texttt{created\_at\_i} ceiling: a single Algolia query caps at 1{,}000 hits and
+would otherwise return the \emph{newest} 1{,}000, deleting the early hours that
+carry the signal.
+
+\subsection{Metrics}
+
+For a daily series, \textbf{baseline} $b$ is the median over a stated quiet
+window ending 7 days before $t_0$; the gap keeps pre-event coverage out of its
+own baseline. \textbf{Excess} over a window is $\sum \max(0, v(d) - b)$, floored
+at zero so a quiet day adjacent to a spike cannot cancel part of it.
+\textbf{Baseline-days} is excess divided by $b$, and is the only form comparable
+across pages of very different size; §\ref{sec:counting} is reported in it.
+Computing that comparison in raw excess views between pages whose baselines
+differ by a factor of 16 is precisely what the normalisation exists to prevent,
+so both units are reported and the choice stays visible.
+
+\subsection{Nulls}
+
+Every claim of the form ``X moved'' or ``X did not move'' is stated against a
+distribution. Five are used. (i) A \textbf{season-matched concept null}: a
+30-day window slid in 5-day steps across 15 June--15 September of 2024 and 2025.
+Season matching is not cosmetic --- a null drawn instead from January--May 2026
+is non-exchangeable, since those pages run 6--47\,\% busier then. (ii) A
+\textbf{daily-ratio null} for single-day claims: each day's views over a
+trailing 30-day median, across 166 prior days. (iii) A \textbf{thread null} for
+the engagement channel: fitted half-lives across comparable front-page Hacker
+News threads, where comparability ($\geq 500$ points, $\geq 200$ comments,
+June--August 2026, drawn from ten broad topic queries so selection is by
+prominence rather than content) was fixed before any half-life was inspected.
+(iv) A \textbf{matched event}: the 13 June 2026 US directive suspending access
+to Fable 5 and Mythos 5 --- same model class, five weeks earlier, protagonist a
+developer rather than a victim. (v) A \textbf{generic control}, the
+\texttt{Machine\_learning} page, separating risk-specific movement from ordinary
+AI curiosity.
+
+\subsection{Estimation}
+
+Decay fits use exponential, power-law and two-phase forms in log space, with the
+two-phase breakpoint charged an extra $2\ln C$ in AIC for having been selected
+by searching $C$ candidates. Because log-space least squares is biased with
+invalid standard errors \cite{clauset2009powerlaw}, every exponential fit is also
+computed by nonlinear least squares on the raw scale and both are reported.
+Residuals are serially correlated (Durbin--Watson $1.17$ and $1.35$ on the daily
+channels), so intervals are moving-block bootstraps, block length 4, $n=800$,
+seed 1. Comparisons between two half-lives bootstrap the \emph{ratio} directly
+(seed 4): two separately estimated intervals overlapping is not a test that the
+parameters are indistinguishable.
+
+%====================================================================
+\section{Results}
+%====================================================================
+
+\subsection{Reach comparisons are counting-dependent}
+\label{sec:counting}
+
+The published account states that on Wikipedia, ``June's ban of Fable 5 drove
+roughly seven times more excess traffic than this incident has so far, and
+OpenAI's own page didn't move at all'' \cite{segerie2026warningshot}. Both
+halves are testable, and the 48-hour window is fixed by the source's own
+``forty-eight hours in''.
+
+\begin{center}
+\small
+\begin{tabular}{llrrr}
+\toprule
+Role & Page & Baseline/day & Excess (48\,h) & \textbf{Baseline-days} \\\midrule
+victim, July      & \texttt{Hugging\_Face} &    702 & 28{,}170 & \textbf{40.16} \\
+developer, June   & \texttt{Anthropic}     & 11{,}097 & 19{,}324 & \textbf{1.74} \\
+developer, July   & \texttt{OpenAI}        &  6{,}571 &  2{,}298 & \textbf{0.35} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent \textbf{``OpenAI's page didn't move at all'' is confirmed}: 0.35
+baseline-days, about a third of one ordinary day's traffic added over two days.
+The comparison, however, depends entirely on which pages are placed on each
+side:
+
+\begin{center}
+\small
+\begin{tabular}{lrr}
+\toprule
+Comparison & Raw excess & \textbf{Baseline-days} \\\midrule
+June developer vs July developer (the published ``$7\times$'') & $8.41\times$ & $4.98\times$ \\
+\textbf{July victim vs June developer} & $1.46\times$ & $\mathbf{23.06\times}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Counting developer pages against each other --- the natural like-for-like
+choice, and evidently the one made --- reproduces the published direction.
+Counting the page that actually absorbed the attention in each event reverses
+it, in the normalised units by a factor of 23. This is not an error to score
+against the source --- the developer-page comparison is the obvious one to reach
+for --- but it is a measurement finding with teeth. The June ban was a story
+about a developer and landed on the developer's page; the July incident was a
+story about a breach and landed on the victim's. \textbf{Comparing them on the
+developer axis silently compares a story to its own off-target.}
+
+\paragraph{The rule, applied symmetrically.} The pairing above sets the July
+\emph{victim} page against the June \emph{developer} page, which demonstrates
+the absorbing-page rule for July while merely assuming it for June. Running the
+same search on the June side:
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+June candidate page & Baseline/day & Excess & Baseline-days & Ratio to July victim \\\midrule
+\texttt{Export\_control}         &     30 &    304 & 10.32 & $3.89\times$ \\
+\texttt{Anthropic} (13 Jun)      & 11{,}097 & 19{,}324 &  1.74 & $23.06\times$ \\
+\texttt{Anthropic} (12 Jun anchor) & 11{,}423 & 15{,}861 &  1.39 & $28.92\times$ \\
+\texttt{Claude\_(language\_model)} &  7{,}852 &  3{,}458 &  0.44 & $91.21\times$ \\
+\texttt{OpenAI}                  &  7{,}620 &  2{,}102 &  0.28 & $145.54\times$ \\
+\texttt{US\_Dept\_of\_Commerce}    &    312 &      0 &  0.00 & --- \\
+\texttt{Artificial\_intelligence} & 11{,}045 &      0 &  0.00 & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent \textbf{The direction is robust and the magnitude is not.} The July
+victim page absorbed more than \emph{every} June candidate tested, in raw excess
+views as well as in baseline-days, so this is not a units artifact. The ratio
+nonetheless ranges from $3.89\times$ to $145.54\times$ depending on the
+comparator, because a ratio of baseline-days factors exactly into a raw-excess
+ratio times an inverse-baseline ratio,
+$(e_1/b_1)/(e_2/b_2) = (e_1/e_2)\times(b_2/b_1)$, and the two factors pull in
+different directions (App.~\ref{sec:limits-ext} decomposes each comparator).
+Most of the \texttt{Anthropic} multiple is \texttt{Anthropic} being a
+sixteen-times larger page; the \emph{smallest} multiple, $3.89\times$ against
+\texttt{Export\_control}, conceals a raw-excess ratio of $92.51\times$ running
+the other way. \textbf{Neither the largest nor the smallest multiple should be
+quoted as the result.} What the data supports is that the victim page wins
+against every comparator on both metrics, by between $1.46\times$ and
+$92.51\times$ raw and $3.89\times$ to $145.54\times$ normalised --- \textbf{the
+direction, plus the range, and not any single multiple.}
+
+Two properties of the metric follow. Normalising by a page's own baseline
+rewards low-traffic pages --- \texttt{Export\_control}'s 30 views a day turn 304
+excess views into 10.32 baseline-days --- and no minimum-traffic threshold was
+pre-registered, so that page is reported rather than excluded after the fact.
+And the absorbing-page rule is an argmax over the quantity being measured, so it
+is a diagnostic that the answer is comparator-dependent rather than an
+estimator; a usable ex-ante rule would name the entity in the incident's primary
+disclosure, or the event article where the window is long enough for one to
+exist.
+
+\paragraph{The page the rule points at does not exist yet.} English Wikipedia has
+a dedicated event article, \texttt{2026\_OpenAI\_agent\_cyberattacks} --- the
+natural object for an absorbing-page rule, and the object type used by
+\cite{garciagavilanes2016crashes} and \cite{igarashi2022twophase}. \textbf{Its
+pageview record begins on 31 July 2026}, nine days after attribution and eight
+after the peak: it did not exist during the 48-hour window, so its contribution
+is undefined rather than small, and with no pre-event baseline its baseline-days
+cannot be computed at all. This is general --- event articles are created
+\emph{in response to} attention, typically days into a story, so they are
+structurally incapable of measuring the initial spike, while entity pages exist
+beforehand and can. \textbf{For short windows, some of the candidate pages have
+not been written yet.}
+
+\paragraph{Anchor and baseline windows.} The Commerce directive reached
+Anthropic at 21:21 UTC on 12 June and the models were disabled within hours, so
+in UTC days the June anchor is 12 June rather than 13 June; both are tabulated
+above, and the 12 June anchor moves the ratio \emph{up}, to $28.92\times$. The
+direction survives every baseline window tested (14/30/60/90 days): the victim
+figure is baseline-invariant (0.3\,\% spread, 28{,}156--28{,}199) while the
+\texttt{OpenAI} figure moves $4.6\times$ (632--2{,}926). The published ``roughly
+seven times'' is thus one point in a range of roughly 4--28$\times$ before units
+are raised at all, and is marked \textbf{not stable} rather than replicated ---
+as, by the same standard, is ours.
+
+\subsection{No detectable movement in the risk vocabulary}
+\label{sec:null}
+
+Four AI-risk concept pages --- \texttt{AI\_safety}, \texttt{AI\_alignment},
+\texttt{Artificial\_general\_intelligence} and the existential-risk page ---
+took 1{,}412 excess views combined in the first 48 hours against 28{,}170 for
+the victim's page. Over 30 days they accumulate 17{,}699, and each gains 7--11
+baseline-days while the generic \texttt{Machine\_learning} control gains $0.97$.
+Read alone that looks like slow conversion. Against a null it is not.
+
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Season-matched null, summed 30-day concept excess & Views \\\midrule
+minimum & 1{,}360 \\
+median & 11{,}964 \\
+maximum & 28{,}233 \\
+\textbf{observed, 21 Jul $+$ 30 days} & \textbf{17{,}699} \\
+\midrule
+\textbf{percentile against the null} & \textbf{53.8} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thirteen windows drawn from July--September of 2024 and 2025; the observed value
+sits essentially at the median of ordinary drift. Run through the identical
+null, the generic \texttt{Machine\_learning} control's 30-day excess of 1{,}826
+sits at the \textbf{31st percentile} (null median 3{,}140), so concept pages and
+control are both inside ordinary variation --- the consistent reading.
+
+\paragraph{Power, and what this null cannot detect.} A percentile does not say
+whether the design \emph{could} have found an effect. The null median is
+11{,}964 and its 90th percentile 26{,}545, so a concept response would have had
+to exceed \textbf{$2.22\times$ ordinary drift} to clear the 90th percentile
+($2.28\times$ for the 95th); the observed 17{,}699 is $1.48\times$ the median.
+\textbf{The correct statement is not that the vocabulary did not move, but that
+movement below roughly $2.2\times$ ordinary drift was undetectable here, and none
+was detected.} The observed value is rank 7 of 13, with an exact binomial interval from the
+25.1st to the 80.8th percentile (App.~\ref{sec:limits-ext}) --- entirely inside
+ordinary variation, though ``53.8th percentile'' is a location, not a
+three-significant-figure quantity. The basket of four pages was chosen for face
+validity, not pre-registered, and the summed form hides whether one page carries
+the result. The null is drawn from 2024--2025 against a 2026 observation, so if
+AI-risk pages have grown year on year the observed excess is inflated relative
+to the null, biasing the percentile \emph{upward} and making the no-movement
+reading conservative.
+
+\subsection{The disclosure was ordinary; the attribution was off-scale}
+\label{sec:attribution}
+
+\begin{center}
+\small
+\begin{tabular}{llrl}
+\toprule
+Date & Event & \texttt{Hugging\_Face} & vs baseline \\\midrule
+16 Jul & Hugging Face discloses the breach & 856 & $1.22\times$ \\
+17--20 Jul & --- & 439--1{,}144 & flat \\
+21 Jul & OpenAI acknowledges responsibility & 1{,}767 & $2.5\times$ \\
+22 Jul & press wave & \textbf{17{,}306} & $\mathbf{24.7\times}$ \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent\footnotesize Baseline 701.5 views/day throughout, per §3.2.
+\end{center}
+
+Against the distribution of daily ratios for this page over the preceding 166
+days (median $1.00$, p90 $1.21$, maximum $1.55$), \textbf{$1.22\times$ is the
+91st percentile} --- 15 of 166 days reach it. The disclosure produced a
+detectable, top-decile, entirely ordinary day. The contrast is therefore between
+two kinds of ordinary: the victim's own disclosure of a serious breach moved its
+page to a level it reaches 9\,\% of days anyway, while attribution to a named
+frontier lab moved it to $24.7\times$ baseline, roughly sixteen times beyond the
+largest daily ratio in the preceding 166 days. The developer's page stayed at
+0.35 baseline-days (§\ref{sec:counting}).
+
+\subsection{At least three attention impulses, and the largest is unrelated}
+\label{sec:impulses}
+
+\begin{center}
+\small
+\begin{tabular}{llrl}
+\toprule
+Date & Driver & Views & vs baseline \\\midrule
+22 Jul & attribution $+$ press wave & 17{,}306 & $24.7\times$ \\
+27 Aug & two forensic reports \textbf{and} acquisition reporting & 28{,}026 & $39.9\times$ \\
+\textbf{3 Sep} & \textbf{Nvidia--Hugging Face deal announced} & \textbf{34{,}679} & $\mathbf{49.4\times}$ \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent\footnotesize All ratios against the same baseline of 701.5 views/day
+(30-day median ending seven days before 21 July), per §3.2.
+\end{center}
+
+The largest spike in the series is an acquisition announcement, not the
+incident, and it is genuine human traffic: \texttt{agent=user} 34{,}679 against
+\texttt{all-agents} 35{,}898, split desktop 17{,}080 / mobile-web 16{,}673 /
+mobile-app 926. The 27 August impulse is not attributable to the forensic
+reports either. \emph{The Information} reported that Nvidia had agreed to buy
+Hugging Face for \$12.9\,bn on the evening of 26 August, and TechCrunch carried
+it at 06:32 UTC on \textbf{27 August} --- the spike day, in the UTC days
+Wikimedia reports. The largest corporate story in the company's history lands on
+the same pageview day as the two reports, and this series cannot separate them,
+so \textbf{only the 22 July impulse is cleanly attributable to the incident} and
+whether forensic publication drives a second peak is not testable here.
+
+This is the sharpest available statement of the entity channel's construct
+problem. \texttt{Hugging\_Face} measures attention to a \emph{company}, and over a
+long enough horizon company news dominates incident news, so any decay analysis
+on such a page must be truncated before the next corporate event --- which the
+analyst cannot know in advance. A single-impulse collective-memory model
+therefore cannot represent this series; the right family is a self-exciting
+process with a time-varying exogenous input
+\cite{crane2008robust,rizoiu2016hip}, and none is fitted here
+(§\ref{sec:limits}).
+
+\subsection{A cross-channel decay comparison that does not survive its null}
+\label{sec:failed}
+
+Fitting the three channels separately gives half-lives of $7.05$ hours (Hacker
+News comments), $5.45$ days (Wikipedia) and $6.11$ days (GDELT) --- a
+$20.8\times$ spread reading as evidence that attention runs on separate clocks
+and that the field read the fast one. Two tests remove that reading.
+
+\paragraph{The engagement half-life is a property of the platform.} Thirty
+comparable front-page threads, fitted identically:
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+& min & p25 & \textbf{median} & p75 & max \\\midrule
+Null half-life (hours), $n=30$ threads & 5.76 & 6.88 & \textbf{7.69} & 8.80 & 16.94 \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\textbf{Incident thread: $7.05$ h $\rightarrow$ 33rd percentile}
+(rank 10 of 30; Clopper--Pearson 95\,\% interval 17.3rd--52.8th).
+\end{center}
+
+The incident's thread decays \emph{more slowly} than the median comparable
+thread. Every front-page thread in the sample turns over in 6--9 hours, exactly
+as \cite{wu2007novelty} reported in 2007. The number measures Hacker News. Part
+of the cross-channel spread is also binning: the engagement channel was fitted
+hourly and the others daily, and a daily series cannot resolve a sub-day
+half-life. Re-binning the same comments to daily gives $0.759$ days rather than
+$0.294$, cutting the ratio against the lookups channel from $18.6\times$ to
+$7.2\times$ --- a bound on the artifact rather than a measurement of it, since
+the daily fit rests on 8 heavily front-loaded bins.
+
+\paragraph{What remains.} Two statements survive. The channels are \emph{not}
+shown to differ: a bootstrap on the ratio of the lookups and media half-lives
+gives $1.120$, 95\,\% interval $(0.788,\ 1.740)$, which contains 1. And,
+independently of this event, \emph{every} front-page aggregator thread turns
+over within about eight hours --- so a conversion scorecard read at 48 hours is
+always reading a community channel that has already closed. That is a statement
+about the timing of measurement, weaker and more general than a claim about this
+warning shot's decay.
+
+\subsection{Robustness}
+\label{sec:robust}
+
+Every surviving number was re-tested against the strongest objections we could
+construct: log-space OLS bias refit by raw-scale nonlinear least squares,
+autocorrelation absorbed by a moving-block bootstrap, contamination probed by
+dropping the Kimi-K3 release days, a searched breakpoint charged $2\ln C$ in
+AIC, the concept null rebuilt season-matched, the reach comparison recomputed in
+both unit systems, half-life comparisons bootstrapped as ratios rather than read
+off overlapping intervals, and the engagement half-life set against 30
+comparable threads. Magnitudes move --- up to $2.7\times$ under a change of
+estimator --- but every pairwise verdict reported here survives, and the two
+claims that do not survive are the ones withdrawn in §\ref{sec:failed}.
+App.~\ref{sec:robust-table} gives the objection-by-objection table, and
+\texttt{scripts/robustness/} reproduces it in one command.
+
+%====================================================================
+\section{Discussion}
+\label{sec:discussion}
+%====================================================================
+
+\paragraph{The finding a communications team can act on.} Before asking how far
+an incident travelled, decide whose page counts as ``it'', and say so. On an
+incident with a perpetrator and a victim the available choices give opposite
+answers, and for short windows some candidates do not exist yet --- the
+difference between ``the warning shot underperformed an export-control action''
+and ``the warning shot outperformed it'', from the same data.
+
+\paragraph{The result that should worry the field.} The organisations moved; the
+vocabulary shows no movement we could detect. Concept-page attention over 30
+days is indistinguishable from what those pages do in an ordinary summer, and
+the generic control sits inside the same band. The honest form is bounded --- the
+design could not have detected a response smaller than about $2.2\times$ ordinary
+drift, so what can be said is that no \emph{large} conversion occurred. Even
+bounded that way it is the result most worth acting on, because a large
+conversion is what the warning-shot argument needs.
+
+\paragraph{On measurement timing.} Every front-page aggregator thread closes
+within about eight hours \cite{wu2007novelty}, so a conversion scorecard read at
+48 hours is reading a channel that shut a day and a half earlier --- a property
+of the medium rather than of any event, and what the cross-channel analysis
+supports once its null is applied (§\ref{sec:failed}).
+
+\paragraph{Two hypotheses, not rules.} From one incident: (i) plan for the
+attention event to fire on attribution to a named lab rather than on the
+victim's disclosure; (ii) expect corporate news about the victim to overwhelm
+incident signal on any long horizon. Each is generated by $n=1$. Both concern
+\emph{whom} and \emph{when} rather than volume --- as does the strongest
+communications finding from cabinet-level AI crisis exercises, that ``specific,
+practical information for the most-exposed actors was more useful than broad
+warnings or silence'' \cite{shamir2026ttx}.
+
+%====================================================================
+\section{Limitations and Dual-Use Considerations}
+\label{sec:limits}
+%====================================================================
+
+\paragraph{Limitations.} (L1) \emph{$n = 1$ event}, with one matched control:
+nothing here establishes a law of warning-shot attention, and
+§\ref{sec:discussion}'s implications are hypotheses from a single incident.
+(L2) \emph{Proxy validity.} Pageviews measure encyclopaedia lookups, not
+awareness or opinion change; \texttt{Hugging\_Face} measures a \emph{company},
+and §\ref{sec:impulses} shows corporate news dominating it; GDELT
+\texttt{timelinevol} is a share of monitored coverage, not a count.
+(L3) \emph{Small nulls.} Thirteen overlapping concept windows collapse to a
+handful of independent samples, so the 53.8th percentile is a location inside
+ordinary variation, not a $p$-value; the thread null is 30 threads from one
+platform over three months. (L4) \emph{Estimator dependence.} Half-lives move up
+to $2.7\times$ between log-space OLS and raw-scale NLS, so no single half-life is
+the quantity. (L5) \emph{Truncation is unavoidable and partly arbitrary}: decay
+windows must end before the next corporate event, which is not knowable in
+advance. (L6) \emph{Confounded second impulse}: the 27 August spike has three
+candidate drivers, none separable here, so whether forensic publication drives a
+second peak is untestable on these data. (L7) \emph{Comparator dependence of the
+headline}: the inversion's direction is robust across all six June candidates
+and both unit systems, but its magnitude spans $3.9\times$ to $145.5\times$
+normalised and $1.46\times$ to $92.5\times$ raw, and no minimum-traffic rule was
+pre-registered. (L8) \emph{The selection rule is retrospective}: ``count the
+absorbing page'' is an argmax over the outcome, a diagnostic rather than an
+estimator. (L9) \emph{Power}: the concept null could not have detected a response
+below about $2.2\times$ ordinary drift. (L10) \emph{No self-exciting model
+fitted}, though \cite{crane2008robust,rizoiu2016hip} is the right family here.
+(L11) \emph{Review provenance}: the adversarial review behind this paper was the
+author's own with model assistance, not an independent party's, so it tests the
+objections the author could construct. App.~\ref{sec:limits-ext} expands L3, L4,
+L6, L7 and L10.
+
+\paragraph{Dual-use.} This work measures what makes an AI incident travel, and
+the same findings could be used to suppress attention rather than spread it.
+§\ref{sec:attribution} is the sharp case: a victim's unilateral disclosure moves
+its page to an ordinary busy day, while attribution to a named lab moves it
+off-scale. A lab wishing to minimise public attention to its own incident could
+read that as an argument for delaying or diffusing attribution, and
+§\ref{sec:counting} as an argument for steering coverage toward whichever entity
+page is least likely to register it.
+
+We state this openly for three reasons. It is already the incentive gradient labs
+face, so the measurement describes a pressure that exists rather than creating
+one. A public, checkable estimate is more useful to those arguing for timely
+attribution --- regulators, journalists, the breached party --- than to the one
+actor deciding whether to delay, because the number that shows delay is
+effective also shows when it has happened. And it cuts symmetrically, being
+equally an argument for a regime in which attribution is timely by requirement
+rather than by choice, which is the use we would defend. No part of this
+analysis uses non-public data, touches any live system, or involves any model
+capability; the released artifact holds public pageview counts, thread
+timestamps and coverage volumes, and nothing in it lowers the cost of running an
+incident or identifies a person.
+
+\bibliographystyle{plainurl}
+\bibliography{references}
+
+%====================================================================
+\appendix
+%====================================================================
+
+\section{Extended limitations}
+\label{sec:limits-ext}
+
+\paragraph{(L3) Null sizes.} The concept null is thirteen 30-day windows slid in
+5-day steps across 15 June--15 September of 2024 and 2025. Overlapping windows
+are not independent, so the effective sample is smaller than thirteen. The
+observed value is rank 7 of 13; an exact binomial (Clopper--Pearson) interval on
+that rank runs from the \textbf{25.1st to the 80.8th percentile}, and the true
+interval is wider still because of the overlap. The percentile is therefore a
+location statement inside ordinary variation, not a $p$-value, and ``53.8''
+should not be read as a three-significant-figure quantity. The thread null is 30
+threads drawn from one platform over three months.
+
+\paragraph{(L4) Estimator dependence.} Least squares on log-transformed data is
+a biased estimator with invalid standard errors \cite{clauset2009powerlaw}.
+Every exponential fit is therefore also computed by nonlinear least squares on
+the raw scale. Half-lives on the daily channels move by up to $2.7\times$
+between the two, and the cross-channel spread moves from $20.8\times$ to
+$12.2\times$; the ordering of the channels is invariant. No single half-life in
+this paper should be treated as the quantity.
+
+\paragraph{(L6) The confounded second impulse.} The 27 August spike has three
+candidate drivers: OpenAI's technical report, the independent METR/Redwood
+report \cite{metr2026investigation}, and reporting of the Nvidia acquisition.
+Business Insider reported takeover interest over the preceding weekend;
+\emph{The Information} reported the \$12.9\,bn agreement on the evening of
+26 August; TechCrunch carried it at 23:32 PDT that day, which is 06:32 UTC on
+27 August --- the spike day, in the UTC days Wikimedia reports. None of the
+three is separable in this series.
+
+\paragraph{(L7) Comparator dependence, decomposed.} A ratio of baseline-days
+factors exactly into a raw-excess ratio times an inverse-baseline ratio,
+$(e_1/b_1)/(e_2/b_2) = (e_1/e_2)\times(b_2/b_1)$:
+
+\begin{center}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Comparator & Baseline-days ratio & $=$ raw ratio & $\times$ baseline ratio \\\midrule
+\texttt{Anthropic} (12 Jun anchor) & $28.92\times$ & $1.78\times$ & $16.28\times$ \\
+\texttt{Anthropic} (13 Jun anchor) & $23.06\times$ & $1.46\times$ & $15.82\times$ \\
+\texttt{OpenAI}                    & $145.53\times$ & $13.40\times$ & $10.86\times$ \\
+\texttt{Export\_control}           & $3.89\times$ & $92.51\times$ & $0.04\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Most of the \texttt{Anthropic} multiple is \texttt{Anthropic} being a
+sixteen-times larger page, not the July event drawing sixteen times more
+traffic. The \emph{smallest} multiple in the range, $3.89\times$ against
+\texttt{Export\_control}, conceals a raw-excess ratio of $92.51\times$ running
+the other way, because \texttt{Export\_control}'s baseline is a twenty-fifth of
+the victim page's. Neither the largest nor the smallest multiple should be
+quoted as the result.
+
+\paragraph{(L10) No self-exciting model fitted.} A self-exciting process with a
+time-varying exogenous input \cite{crane2008robust,rizoiu2016hip} is the right
+family for a series with multiple impulses. A reference HIP implementation was
+run and did not identify on a 50-day series with two sparse impulses; a denser
+exogenous input is the next step. The repository ships the HawkesN fit and the
+feasibility probe so the negative result is checkable.
+
+\paragraph{Citation discipline.} Every reference had its title, authors and year
+confirmed against the source. A German-language headline widely quoted in
+discussion of this incident could not be located and is therefore not cited.
+
+\section{Robustness table}
+\label{sec:robust-table}
+
+Each row is an objection to a number in §\ref{sec:counting}--§\ref{sec:failed},
+the test run against it, and the outcome. \texttt{scripts/robustness/} reproduces
+every row offline.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.29\linewidth}p{0.30\linewidth}p{0.31\linewidth}}
+\toprule
+Objection & Test & Outcome \\\midrule
+Log-space OLS is biased \cite{clauset2009powerlaw} & refit by raw-scale NLS & magnitudes move up to $2.7\times$; ordering invariant \\
+Residuals autocorrelated & moving-block bootstrap & intervals widen 3--18\,\%; all pairwise verdicts unchanged \\
+Entity page contaminated & drop the Kimi-K3 release days & OLS half-life $5.450 \to 5.413$ d ($0.99\times$) \\
+Breakpoint chosen by search & charge $2\ln C$ to two-phase AIC & two of three channels survive, not three \\
+Null not season-matched & rebuild from prior-year Jul--Sep & $68.2 \to \mathbf{53.8}$; matched figure reported \\
+Comparison uses raw views & recompute in baseline-days & $1.46\times$ raw, $\mathbf{23.06\times}$ normalised; both reported \\
+Overlapping intervals used as a test & bootstrap the ratio directly & $(0.788,\ 1.740)$, contains 1 \\
+Half-life may be platform-typical & null over 30 comparable threads & \textbf{33rd percentile --- claim not supported} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Search protocol for the novelty claim}
+\label{sec:searchprotocol}
+
+The claim in §\ref{sec:related} is narrow: no prior treatment of
+\emph{entity-choice dependence} in incident reach measurement could be found.
+Searched 2026-09-04/05 via Google Scholar and web search, in English, with
+combinations of \{collective attention, attention decay, Wikipedia pageviews\}
+$\times$ \{AI incident, data breach, cybersecurity incident, security
+disclosure\}, plus forward citations of \cite{garciagavilanes2016crashes} and
+\cite{igarashi2022twophase}. This is a bounded search, not a systematic review.
+The works in §\ref{sec:related} that most closely bound the contribution,
+\cite{cavusoglu2004breach} among them, were located only after external
+prompting --- which is itself evidence that the search was not exhaustive.
+
+\section{Reproducibility}
+\label{sec:repro}
+
+Python 3.10+; \texttt{numpy}, \texttt{scipy}, \texttt{matplotlib},
+\texttt{requests}, \texttt{pyyaml}. Bootstrap seeds are fixed (block bootstrap
+seed 1, ratio bootstrap seed 4).
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Command & What it establishes \\\midrule
+\texttt{python -m pytest} & 92 tests, no network \\
+\texttt{python scripts/verify.py} & 67 headline numbers recomputed from committed results \\
+\texttt{python scripts/run.py all} & regenerates the channel fits and figures \\
+\texttt{python scripts/robustness\_suite.py} & regenerates the robustness table \\
+\texttt{python scripts/nulls\_and\_controls.py} & regenerates the thread and season-matched nulls \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Every command runs offline against the shipped cache at \$0 cost. A
+clean checkout without the sibling corpora skips the corpus tests.
+
+\section{Declarations}
+
+\paragraph{Data availability.} All sources are public and keyless: Wikimedia
+Pageviews \cite{wikimedia2026pageviews}, the Hacker News Algolia API, and GDELT
+DOC 2.0 \cite{gdelt2026doc}. Code, cached API responses, committed results and
+figures accompany this submission and are released MIT-licensed. No restricted,
+proprietary or personal data was used.
+
+\paragraph{Ethics.} No human subjects, no personal data, no interaction with any
+live system beyond public read-only API queries issued with an identifying user
+agent and rate-limit backoff. No journalist, creator or policymaker was
+contacted: the sprint brief conditions outreach on affiliation with a
+credibility-lending structure, and that condition is not met here.
+
+\paragraph{Author contributions (CRediT).} Fatimah Emad Eldin:
+conceptualization, methodology, software, formal analysis, investigation, data
+curation, writing---original draft, writing---review \& editing, visualization.
+
+\paragraph{Conflict of interest.} None declared. The author has no affiliation
+with OpenAI, Hugging Face, Anthropic, Nvidia, METR, Redwood Research, CeSIA,
+RAND or Apart Research. §\ref{sec:counting} re-measures figures published by
+CeSIA, a co-organiser of this sprint; the re-measurement is reported as a
+methodological result with the benign explanation stated alongside it.
+
+\paragraph{Funding.} None. No compute budget and no paid API access were used.
+
+\paragraph{LLM-assisted authoring.} The author used Claude Opus for literature
+scoping, API feasibility probing, prose drafting, code review and adversarial
+review of the drafts. The research question, the entity-choice framing and the
+null designs are the author's own. All quantitative results were computed by the
+released code and are reproducible via \texttt{verify.py}.
+
+\end{document}

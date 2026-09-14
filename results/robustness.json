@@ -1,0 +1,241 @@
+{
+  "estimator_comparison": {
+    "channels": [
+      {
+        "channel": "lookups",
+        "half_life_ols_days": 5.449715505739593,
+        "half_life_nls_days": 2.0483046973419836,
+        "ratio_nls_over_ols": 0.3758553442257173,
+        "r2_log_ols": 0.8175423719361538,
+        "r2_raw_nls": 0.8236118499407462,
+        "n_points": 26
+      },
+      {
+        "channel": "media",
+        "half_life_ols_days": 6.106138407252115,
+        "half_life_nls_days": 3.5497555721533636,
+        "ratio_nls_over_ols": 0.5813421405478466,
+        "r2_log_ols": 0.6304626013383121,
+        "r2_raw_nls": 0.5628284283046215,
+        "n_points": 26
+      },
+      {
+        "channel": "engagement",
+        "half_life_ols_days": 0.2936905591118851,
+        "half_life_nls_days": 0.28981590253268713,
+        "ratio_nls_over_ols": 0.9868070101030322,
+        "r2_log_ols": 0.7869014788189452,
+        "r2_raw_nls": 0.8408889527128637,
+        "n_points": 41
+      }
+    ],
+    "spread_ols": 20.791061264335383,
+    "spread_nls": 12.24831191501992,
+    "ordering_preserved": true
+  },
+  "interval_comparison": {
+    "channels": [
+      {
+        "channel": "lookups",
+        "half_life_days": 5.449715505739593,
+        "ci_iid_days": [
+          4.636636702565108,
+          6.590240963824323
+        ],
+        "ci_block_days": [
+          4.565246113453392,
+          6.575187767492827
+        ],
+        "width_ratio_block_over_iid": 1.0288376688653962,
+        "durbin_watson": 1.167262563379688,
+        "lag1_autocorr": 0.3739537730550281
+      },
+      {
+        "channel": "media",
+        "half_life_days": 6.106138407252115,
+        "ci_iid_days": [
+          4.824224990005184,
+          8.85862036052562
+        ],
+        "ci_block_days": [
+          4.550923037726095,
+          9.326493332679833
+        ],
+        "width_ratio_block_over_iid": 1.1837140033049587,
+        "durbin_watson": 1.3546587143227335,
+        "lag1_autocorr": 0.29537059539375965
+      },
+      {
+        "channel": "engagement",
+        "half_life_days": 0.2936905591118851,
+        "ci_iid_days": [
+          0.25147958873838955,
+          0.3538447590625853
+        ],
+        "ci_block_days": [
+          0.24643517137198653,
+          0.3658453394250369
+        ],
+        "width_ratio_block_over_iid": 1.1665116921592789,
+        "durbin_watson": 0.9922411662570789,
+        "lag1_autocorr": 0.49625298465722906
+      }
+    ],
+    "pairwise_block": [
+      {
+        "a": "lookups",
+        "b": "media",
+        "intervals_overlap": true
+      },
+      {
+        "a": "lookups",
+        "b": "engagement",
+        "intervals_overlap": false
+      },
+      {
+        "a": "media",
+        "b": "engagement",
+        "intervals_overlap": false
+      }
+    ],
+    "block_length": 4
+  },
+  "contamination_sensitivity": {
+    "excluded_dates": [
+      "20260727",
+      "20260728"
+    ],
+    "reasons": {
+      "20260727": "Kimi-K3 release on Hugging Face (HN 1,382 + 391 pts)",
+      "20260728": "Kimi-K3 coverage continues; views still elevated"
+    },
+    "full": {
+      "n_points": 26,
+      "half_life_ols": 5.449715505739593,
+      "half_life_nls": 2.0483046973419836,
+      "r2_log_ols": 0.8175423719361538
+    },
+    "excluded": {
+      "n_points": 24,
+      "half_life_ols": 5.412592391918628,
+      "half_life_nls": 1.5183354707070842,
+      "r2_log_ols": 0.8085192057451221
+    },
+    "ols_shift_ratio": 0.993188063894002
+  },
+  "selection_corrected_models": {
+    "channels": [
+      {
+        "aic_gap": 5.583014073293661,
+        "candidates": 17,
+        "selection_penalty": 5.666426688112432,
+        "survives": false,
+        "channel": "lookups"
+      },
+      {
+        "aic_gap": 6.5703347414090025,
+        "candidates": 17,
+        "selection_penalty": 5.666426688112432,
+        "survives": true,
+        "channel": "media"
+      },
+      {
+        "aic_gap": 13.644191551067323,
+        "candidates": 30,
+        "selection_penalty": 6.802394763324311,
+        "survives": true,
+        "channel": "engagement"
+      }
+    ],
+    "n_surviving": 2,
+    "n_tested": 3
+  },
+  "season_matched_null": {
+    "n_windows": 13,
+    "min": 1359.5,
+    "median": 11963.5,
+    "max": 28233.0,
+    "observed": 17699.0,
+    "percentile": 53.84615384615385,
+    "windows": [
+      {
+        "window_start": "20250615",
+        "window_end": "20250714",
+        "concept_excess": 1556.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250620",
+        "window_end": "20250719",
+        "concept_excess": 1359.5,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250625",
+        "window_end": "20250724",
+        "concept_excess": 1873.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250630",
+        "window_end": "20250729",
+        "concept_excess": 2749.5,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250705",
+        "window_end": "20250803",
+        "concept_excess": 6008.5,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250710",
+        "window_end": "20250808",
+        "concept_excess": 17749.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250715",
+        "window_end": "20250813",
+        "concept_excess": 26479.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250720",
+        "window_end": "20250818",
+        "concept_excess": 28233.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250725",
+        "window_end": "20250823",
+        "concept_excess": 26562.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250730",
+        "window_end": "20250828",
+        "concept_excess": 25226.5,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250804",
+        "window_end": "20250902",
+        "concept_excess": 20482.0,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250809",
+        "window_end": "20250907",
+        "concept_excess": 11963.5,
+        "season": "2025"
+      },
+      {
+        "window_start": "20250814",
+        "window_end": "20250912",
+        "concept_excess": 6406.5,
+        "season": "2025"
+      }
+    ]
+  }
+}
