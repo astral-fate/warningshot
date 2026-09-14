@@ -3,7 +3,7 @@
 **A published claim about how far an AI incident travelled reverses when you change which
 Wikipedia page you count — and the risk vocabulary it was a warning about never moved at all.**
 
-Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: [`index.html`](index.html) / [`docs/deck.pdf`](docs/deck.pdf) ·
+Paper: [`paper/main.pdf`](paper/main.pdf) · Deck: **[live](https://astral-fate.github.io/warningshot/)** / [`docs/deck.pdf`](docs/deck.pdf) ·
 Apart Research × CeSIA, AI Incident Response Sprint (Track 4) · MIT licensed
 
 ---
@@ -205,7 +205,8 @@ a PDF if the pipeline diagram failed to load — a blank figure is worse than a 
 rebuilds it on every deploy, so the published PDF is never a stale export.
 
 It is deployed by [`.github/workflows/pages.yml`](.github/workflows/pages.yml). To turn it on:
-**Settings → Pages → Source: GitHub Actions**, then push to `main`. The workflow checks that every
+**Settings → Pages → Source: GitHub Actions**, then push. It is live at
+<https://astral-fate.github.io/warningshot/>. The workflow checks that every
 asset the deck references resolves before publishing, so a moved figure fails the build instead of
 404-ing silently. GitHub Pages on a *private* repository requires a paid plan; on a public one it
 is free.
